@@ -1,0 +1,103 @@
+.hero {
+    position: relative;
+    width: 100vw;
+    height: 595px;
+    left: 50%;
+    margin-left: -50vw;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('../../../img/irina-iriser-QGZ_7Imwdfw-unsplash\ 1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 100px 323px 100px 323px;
+}
+
+.hero-title {
+    color: white;
+    font-family: Montserrat;
+    font-weight: 600;
+    font-style: SemiBold;
+    font-size: 40px;
+    margin-bottom: 80px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-list {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    list-style: none;
+}
+
+.hero-list li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 345px;
+}
+
+.hero-list li:last-child {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 164px;
+}
+
+.hero-list li:not(:last-child)::after {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 144px;
+    background: #FFFFFF;
+    margin-left: 20px;
+}
+
+
+.hero-item {
+    color: white;
+    font-family: Montserrat, sans-serif;
+    font-weight: 500;
+    font-size: 24px;
+}
+
+
+.hero-input-list {
+    display: flex;
+    flex-direction: row;
+    width: 625px;
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-input-list li {
+    display: flex;
+}
+
+.hero-input {
+    width: 580px;
+    height: 42px;
+    border: 1px solid #000;
+    border-radius: 10px 0 0 10px;
+    background-color: #D9D9D9;
+    padding: 0 10px;
+    font-family: Montserrat, sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    outline: none;
+}
+
+.hero-input-button {
+    width: 45px;
+    height: 42px;
+    border: 1px solid #000;
+    border-left-width: 2px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: #FFB36C;
+    background-image: url('../../../img/input-search.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}

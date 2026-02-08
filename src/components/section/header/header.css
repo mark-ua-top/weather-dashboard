@@ -1,0 +1,43 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Header-logo {
+    margin-right: 111px;
+    width: 82px;
+    height: 56px;
+}
+
+.Header-list {
+    display: flex;
+    flex-direction: row;
+    gap: 42px;
+}
+
+.Header-page-button {
+    font-family: Montserrat Alternates;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.Header-sign-up-button {
+    margin-left: auto;
+    font-family: Montserrat Alternates;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 12px;
+    white-space: nowrap;
+    width: 89px;
+    height: 35px;
+    padding: 10px 20px 10px 20px;
+    border-radius: 10px;
+    background-color: #FFB36C;
+}
+
+.Header-user-image {
+    margin-left: 29px;
+}
