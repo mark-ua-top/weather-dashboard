@@ -1,0 +1,31 @@
+.weather {
+    padding: 50px 0;
+    background-color: #f5f5f5;
+}
+
+.weather-card {
+    width: 350px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 30px;
+}
+
+.weather-city {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.weather-temp {
+    font-size: 60px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.weather-description {
+    font-size: 16px;
+    color: gray;
+}

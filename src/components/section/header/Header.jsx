@@ -1,5 +1,3 @@
-import React from 'react';
-import '../../../dstyle.css'
 import './header.css'
 import logo from '../../../img/Logo-header.png';
 import user from '../../../img/user-zaglushka.png';

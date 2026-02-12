@@ -1,5 +1,3 @@
-import React from 'react';
-import '../../../dstyle.css'
 import './hero.css'
 
 
