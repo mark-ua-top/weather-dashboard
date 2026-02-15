@@ -1,0 +1,72 @@
+.forecast-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.forecast-tabs button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background: #d9d9d9;
+}
+
+.forecast-tabs button.active {
+    background: #FFB36C;
+    color: white;
+}
+
+.forecast-btn {
+    background: #FFB36C;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.more-btn {
+    background: #FFB36C;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-left: 5px;
+    transition: 0.2s;
+}
+
+.more-btn:hover {
+    background: #ffa54d;
+}
+
+.more-btn.active {
+    background: #FF8C4C;
+}
+
+.forecast-btn {
+    background: #FFB36C;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.forecast-btn.active {
+    background: #ffa54d;
+}
+
+.forecast-mode-btn {
+    background: #FFB36C;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.forecast-mode-btn.active {
+    background: #ffa54d;
+}

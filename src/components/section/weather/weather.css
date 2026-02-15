@@ -1,31 +1,119 @@
-.weather {
-    padding: 50px 0;
-    background-color: #f5f5f5;
+.weather-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding: 0;
+    list-style: none;
 }
 
-.weather-card {
-    width: 350px;
-    margin: 0 auto;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+.weather-item,
+.weather-item-invalid {
+    background: #ececec;
+    border-radius: 25px;
+    padding: 20px;
     text-align: center;
-    padding: 30px;
+    width: 250px;
+    height: 430px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid black;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
-.weather-city {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 15px;
+.weather-item-invalid {
+    background: #f8d7da;
+    border-color: #f5c2c7;
+}
+
+.weather-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.like-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin: 8px 0;
+}
+
+.time-date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #333;
+    width: 100%;
+}
+
+.weather-icon {
+    font-size: 48px;
+    margin: 12px 0;
 }
 
 .weather-temp {
-    font-size: 60px;
-    font-weight: 700;
-    margin-bottom: 10px;
+    font-size: 32px;
+    font-weight: 600;
 }
 
-.weather-description {
-    font-size: 16px;
-    color: gray;
+.weather-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.more-btn {
+    background: #FFB36C;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.more-btn:hover {
+    background: #ffa54d;
+}
+
+.pieces-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2px;
+    pointer-events: none;
+}
+
+.piece {
+    background: #d1d1d1;
+    border-radius: 4px;
+    width: 100%;
+    height: 100%;
+    animation: fadeOut 0.8s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
 }

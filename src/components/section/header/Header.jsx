@@ -4,8 +4,8 @@ import user from '../../../img/user-zaglushka.png';
 
 export const Header = () => {
     return (
-        <>
-            <div className="container header">
+        <section className="header">
+            <div className="container header-container">
                 <img className="Header-logo" src={logo} alt="Logo" />
                 <ul className="Header-list">
                     <li><button className="Header-page-button">Who we are</button></li>
@@ -15,6 +15,6 @@ export const Header = () => {
                 <button className="Header-sign-up-button">Sign Up</button>
                 <img className="Header-user-image" src={user} alt="user-image" />
             </div>
-        </>
+        </section>
     );
 };

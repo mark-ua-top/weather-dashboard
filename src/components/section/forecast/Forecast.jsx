@@ -14,25 +14,37 @@ import {
 } from 'chart.js';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export const Forecast = () => {
-    const [forecast, setForecast] = useState(null);
+export const Forecast = ({ city }) => {
+
     const apiKey = '62bf88a778653acc6a38cfb2f80523b2';
-    const city = 'Kyiv';
+    const [forecast, setForecast] = useState([]);
+    const [mode, setMode] = useState('hourly');
 
     useEffect(() => {
-        fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`)
+        if (!city) return;
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`)
             .then(res => res.json())
-            .then(data => setForecast(data.list.slice(0, 12)))
+            .then(data => {
+                if (data.list) setForecast(data.list);
+            });
+    }, [city]);
+
+    if (!forecast.length) return <p>Loading...</p>;
+
+    const hourly = forecast.slice(0, 12);
+    const weekly = forecast.reduce((acc, cur) => {
+        const day = cur.dt_txt.split(' ')[0];
+        const existing = acc.find(d => d.day === day);
+        if (!existing) acc.push({ day, temp: cur.main.temp });
+        return acc;
     }, []);
 
-    if (!forecast) return <p>Loading...</p>;
-
     const chartData = {
-        labels: forecast.map(f => f.dt_txt.slice(11, 16)),
+        labels: mode === 'hourly' ? hourly.map(f => f.dt_txt.slice(11, 16)) : weekly.map(f => f.day),
         datasets: [
             {
                 label: 'Temperature °C',
-                data: forecast.map(f => f.main.temp),
+                data: mode === 'hourly' ? hourly.map(f => f.main.temp) : weekly.map(f => f.temp),
                 borderColor: '#FFB36C',
                 tension: 0.4,
             }
@@ -42,6 +54,20 @@ export const Forecast = () => {
     return (
         <section className="forecast">
             <div className="container">
+                <div style={{ marginBottom: '10px' }}>
+                    <button
+                        className={`more-btn ${mode === 'hourly' ? 'active' : ''}`}
+                        onClick={() => setMode('hourly')}
+                    >
+                        Hourly
+                    </button>
+                    <button
+                        className={`more-btn ${mode === 'weekly' ? 'active' : ''}`}
+                        onClick={() => setMode('weekly')}
+                    >
+                        Weekly
+                    </button>
+                </div>
                 <Line data={chartData} />
             </div>
         </section>
