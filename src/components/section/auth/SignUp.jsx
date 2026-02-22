@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './auth.css';
-import defaultUser from '../../../img/user-zaglushka.png';
 
 export const SignUp = ({ switchAuth, onClose }) => {
     const [username, setUsername] = useState('');
