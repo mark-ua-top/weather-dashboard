@@ -8,7 +8,7 @@ import { WeatherParam } from './components/section/weatherParam/WeatherParam.jsx
 import { Forecast } from './components/section/forecast/Forecast.jsx';
 import { Pets } from './components/section/pets/Pets.jsx';
 import { Nature } from './components/section/nature/Nature.jsx';
-import SignUp from './components/section/auth/SignUp.jsx';
+import { SignUp } from './components/section/auth/SignUp.jsx';
 import { SignIn } from './components/section/auth/SignIn.jsx';
 import { Footer } from './components/section/footer/Footer.jsx';
 

@@ -1,45 +1,80 @@
 import React, { useState } from 'react';
-import './auth.css';
 
-export const SignIn = ({ switchAuth, onClose }) => {
+export const SignIn = () => {
     const [usernameOrEmail, setUsernameOrEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [message, setMessage] = useState('');
+    const [userData, setUserData] = useState(null);
 
-    const handleSubmit = async (e) => {
+    const API_URL = 'https://cheerful-fascination.up.railway.app/api';
+
+    const handleSignIn = async (e) => {
         e.preventDefault();
+        setMessage('');
+        setUserData(null);
+
+        if (!usernameOrEmail || !password) {
+            setMessage('All fields required');
+            return;
+        }
+
         try {
-            const res = await fetch('http://localhost:5000/api/signin', {
+            const res = await fetch(`${API_URL}/signin`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ usernameOrEmail, password }),
+                body: JSON.stringify({ usernameOrEmail, password })
             });
+
             const data = await res.json();
-            if (!res.ok) throw new Error(data.error);
-            localStorage.setItem('authToken', 'demoToken');
-            onClose();
+
+            if (!res.ok) {
+                setMessage(data.error || 'Login failed');
+            } else {
+                setUserData(data); // { username, email, avatar }
+                setMessage('Logged in successfully');
+                setUsernameOrEmail('');
+                setPassword('');
+            }
         } catch (err) {
-            setError(err.message);
+            console.error(err);
+            setMessage('Server error');
         }
     };
 
     return (
-        <div className="modal">
-            <div className="modal-content">
-                <button className="close-btn" onClick={onClose}>×</button>
-                <h2>Sign In</h2>
-                {error && <p className="error">{error}</p>}
-                <form onSubmit={handleSubmit}>
-                    <label>Username or E-Mail</label>
-                    <input type="text" placeholder="Username or E-Mail" value={usernameOrEmail} onChange={e => setUsernameOrEmail(e.target.value)} required />
-                    <label>Password</label>
-                    <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
-                    <button type="submit">Sign In</button>
-                </form>
-                <p className="switch-text">
-                    Don't have an account? <span className="link" onClick={switchAuth}>Sign Up</span>
-                </p>
-            </div>
+        <div className="signin-form">
+            <h2>Sign In</h2>
+            <form onSubmit={handleSignIn}>
+                <input
+                    type="text"
+                    value={usernameOrEmail}
+                    onChange={e => setUsernameOrEmail(e.target.value)}
+                    placeholder="Username or Email"
+                />
+                <div>
+                    <input
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        placeholder="Password"
+                    />
+                    <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                        {showPassword ? 'Hide' : 'Show'}
+                    </button>
+                </div>
+                <button type="submit">Sign In</button>
+            </form>
+
+            {message && <div className="message">{message}</div>}
+
+            {userData && (
+                <div className="user-info">
+                    <p>Username: {userData.username}</p>
+                    <p>Email: {userData.email}</p>
+                    <img src={userData.avatar} alt="avatar" width={80} />
+                </div>
+            )}
         </div>
     );
 };
