@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import user from '../../../img/user-zaglushka.png';
-import './auth.css';
 
-export default function SignUp() {
+const SignUp = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [message, setMessage] = useState('');
 
-    const handleSubmit = async (e) => {
+    // Хмарний API на Railway
+    const API_URL = 'https://cheerful-fascination.up.railway.app/api';
+
+    const handleSignUp = async (e) => {
         e.preventDefault();
         setMessage('');
 
@@ -19,57 +20,62 @@ export default function SignUp() {
         }
 
         try {
-            const res = await fetch('https://your-railway-server.com/api/signup', {
+            const res = await fetch(`${API_URL}/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password })
+                body: JSON.stringify({ username, email, password }) // password буде хешуватися на сервері
             });
+
             const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Error');
-            setMessage(data.message);
-            setUsername(''); setEmail(''); setPassword('');
+            if (!res.ok) {
+                setMessage(data.error || 'Error creating user');
+            } else {
+                setMessage(data.message || 'User created successfully');
+                setUsername('');
+                setEmail('');
+                setPassword('');
+            }
         } catch (err) {
-            setMessage(err.message);
+            console.error(err);
+            setMessage('Server error');
         }
     };
 
     return (
-        <form className="signup-form" onSubmit={handleSubmit}>
+        <div className="signup-form">
             <h2>Sign Up</h2>
-
-            <div className="avatar">
-                <img src={user} alt="default user" />
-            </div>
-
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-            />
-            <input
-                type="email"
-                placeholder="E-Mail"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-            />
-            <div className="password-wrapper">
+            <form onSubmit={handleSignUp}>
                 <input
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
+                    type="text"
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                    placeholder="Username"
                 />
-                <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                >
-                    {showPassword ? 'Hide' : 'Show'}
-                </button>
-            </div>
-
-            <button type="submit">Sign Up</button>
+                <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="Email"
+                />
+                <div>
+                    <input
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        placeholder="Password"
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                    >
+                        {showPassword ? 'Hide' : 'Show'}
+                    </button>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
             {message && <div className="message">{message}</div>}
-        </form>
+        </div>
     );
-}
+};
+
+export default SignUp;
