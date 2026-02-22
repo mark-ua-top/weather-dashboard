@@ -1,67 +1,54 @@
-import express from 'express';
-import cors from 'cors';
-import fs from 'fs';
-import path from 'path';
-import bcrypt from 'bcryptjs';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import express from "express";
+import cors from "cors";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const app = express();
-app.use(cors({ origin: '*' }));
+app.use(cors());
 app.use(express.json());
 
-const usersDir = path.join(__dirname, './data');
-if (!fs.existsSync(usersDir)) fs.mkdirSync(usersDir);
+const users = []; // тимчасове сховище
 
-const usersFile = path.join(usersDir, 'users.json');
-if (!fs.existsSync(usersFile)) fs.writeFileSync(usersFile, '[]');
+const JWT_SECRET = "your_super_secret_key";
 
-function readUsers() {
-    const data = fs.readFileSync(usersFile, 'utf-8');
-    return JSON.parse(data || '[]');
-}
+// REGISTER
+app.post("/api/register", async (req, res) => {
+    const { email, password } = req.body;
 
-function writeUsers(users) {
-    fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
-}
+    if (!email || !password)
+        return res.status(400).json({ message: "Missing fields" });
 
-// Sign Up без капчі
-app.post('/api/signup', async (req, res) => {
-    const { username, email, password } = req.body;
-    if (!username || !email || !password)
-        return res.status(400).json({ error: 'All fields required' });
+    const existingUser = users.find(u => u.email === email);
+    if (existingUser)
+        return res.status(400).json({ message: "User already exists" });
 
-    const users = readUsers();
-    if (users.find(u => u.email === email || u.username === username))
-        return res.status(400).json({ error: 'User already exists' });
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    if (password.length < 8)
-        return res.status(400).json({ error: 'Password must be at least 8 characters' });
+    users.push({ email, password: hashedPassword });
 
-    const hash = await bcrypt.hash(password, 10);
-    const newUser = { username, email, password: hash, avatar: 'user-zaglushka.png' };
-    users.push(newUser);
-    writeUsers(users);
-
-    res.json({ message: 'User created' });
+    res.json({ message: "User registered successfully" });
 });
 
-// Sign In
-app.post('/api/signin', async (req, res) => {
-    const { usernameOrEmail, password } = req.body;
-    if (!usernameOrEmail || !password) return res.status(400).json({ error: 'All fields required' });
+// LOGIN
+app.post("/api/login", async (req, res) => {
+    const { email, password } = req.body;
 
-    const users = readUsers();
-    const user = users.find(u => u.email === usernameOrEmail || u.username === usernameOrEmail);
-    if (!user) return res.status(400).json({ error: 'User not found' });
+    const user = users.find(u => u.email === email);
+    if (!user)
+        return res.status(400).json({ message: "Invalid credentials" });
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(400).json({ error: 'Invalid password' });
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid)
+        return res.status(400).json({ message: "Invalid credentials" });
 
-    res.json({ username: user.username, email: user.email, avatar: user.avatar });
+    const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "7d" });
+
+    res.json({ token });
+});
+
+app.get("/", (req, res) => {
+    res.send("Server running");
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
