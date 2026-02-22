@@ -30,7 +30,8 @@
     "react-toastify": "^11.0.5",
     "styled-components": "^6.3.9",
     "web-vitals": "^2.1.4",
-    "world-cities-json": "^1.0.1"
+    "world-cities-json": "^1.0.1",
+    "yaml": "^2.8.2"
   },
   "scripts": {
     "start-server": "node server.js",
