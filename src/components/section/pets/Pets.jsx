@@ -3,39 +3,61 @@ import '../../../dstyle.css';
 import './pets.css';
 
 export const Pets = () => {
-    const [news, setNews] = useState([]);
+    const [dogs, setDogs] = useState([]);
     const [visibleRows, setVisibleRows] = useState(1);
-    const apiKey = 'ea7ac545c116453e9cf2dc121aae296d';
 
     useEffect(() => {
-        fetch(`https://newsapi.org/v2/everything?q=animals&language=en&pageSize=12&apiKey=${apiKey}`)
-            .then(res => res.json())
-            .then(data => {
-                const filtered = data.articles.filter(a => a.urlToImage);
-                setNews(filtered);
-            });
+        const fetchDogs = async () => {
+            try {
+                const response = await fetch('https://dog.ceo/api/breeds/image/random/50');
+                const data = await response.json();
+                if (data.status === 'success' && Array.isArray(data.message)) {
+                    const formatted = data.message.map((imgUrl) => {
+                        const parts = imgUrl.split('/');
+                        const breedRaw = parts[parts.indexOf('breeds') + 1];
+                        const breed = breedRaw.replace('-', ' ');
+                        return { breed: breed.charAt(0).toUpperCase() + breed.slice(1), image: imgUrl };
+                    });
+                    setDogs(formatted);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchDogs();
     }, []);
 
     const showMore = () => setVisibleRows(prev => prev + 1);
 
-    const visibleNews = news.slice(0, visibleRows * 4);
+    const cardsPerRow = 4;
+    const visibleDogs = dogs.slice(0, visibleRows * cardsPerRow);
+    const rows = [];
+    for (let i = 0; i < visibleDogs.length; i += cardsPerRow) {
+        rows.push(visibleDogs.slice(i, i + cardsPerRow));
+    }
+
+    const hasMore = visibleDogs.length < dogs.length;
 
     return (
-        <section className="pets">
+        <section className="pets-section">
             <div className="container">
-                <h2>Interacting with our pets</h2>
-                <div className="pets-grid">
-                    {visibleNews.map((n, i) => (
-                        <div key={i} className="pet-card">
-                            <img src={n.urlToImage} alt={n.title} />
-                            <p>{n.title}</p>
-                        </div>
-                    ))}
-                </div>
-                {visibleNews.length < news.length && (
-                    <button className="pets-btn" onClick={showMore}>See more</button>
+                <h2 className="pets-title">Interacting with our pets</h2>
+                {rows.map((row, rowIndex) => (
+                    <div key={rowIndex} className="pets-grid">
+                        {row.map((dog, index) => (
+                            <div key={index} className="pet-card">
+                                <img className="pet-image" src={dog.image} alt={dog.breed} />
+                                <p className="pet-news">{dog.breed}</p>
+                            </div>
+                        ))}
+                    </div>
+                ))}
+                {hasMore && (
+                    <button className="pets-btn" onClick={showMore}>
+                        See more
+                    </button>
                 )}
             </div>
         </section>
-    )
-}
+    );
+};

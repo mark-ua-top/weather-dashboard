@@ -8,7 +8,7 @@ export const Nature = () => {
     const apiKey = '51401289-2bd7732f7134c90fec2a6586b';
 
     useEffect(() => {
-        fetch(`https://pixabay.com/api/?key=${apiKey}&q=nature&image_type=photo&per_page=5`)
+        fetch(`https://pixabay.com/api/?key=${apiKey}&q=nature&image_type=photo&per_page=20`)
             .then(res => res.json())
             .then(data => setImages(data.hits))
     }, []);
@@ -17,16 +17,31 @@ export const Nature = () => {
     const nextSlide = () => setCurrent((current + 1) % images.length);
 
     return (
-        <section className="nature">
-            <div className="container nature-slider">
+        <section className="container nature">
+            <h1 className='nature-title'>Beautiful nature</h1>
+            <div className="nature-slider">
                 <button className="nav-btn left" onClick={prevSlide}>&lt;</button>
+
                 {images.map((img, i) => {
-                    let className = 'slide';
-                    if (i === current) className += ' active';
-                    else if (i === (current - 1 + images.length) % images.length) className += ' prev';
-                    else if (i === (current + 1) % images.length) className += ' next';
-                    return <img key={i} src={img.webformatURL} alt="nature" className={className} />;
+                    let className = 'slide other';
+
+                    if (i === current) className = 'slide active';
+                    else if (i === (current - 1 + images.length) % images.length) className = 'slide prev';
+                    else if (i === (current + 1) % images.length) className = 'slide next';
+                    else if (i === (current - 2 + images.length) % images.length) className = 'slide prev2';
+                    else if (i === (current + 2) % images.length) className = 'slide next2';
+
+                    return (
+                        <img
+                            key={i}
+                            src={img.webformatURL}
+                            alt="nature"
+                            className={className}
+                            onClick={() => setCurrent(i)}
+                        />
+                    );
                 })}
+
                 <button className="nav-btn right" onClick={nextSlide}>&gt;</button>
             </div>
         </section>

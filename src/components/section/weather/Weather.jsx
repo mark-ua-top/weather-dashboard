@@ -4,6 +4,7 @@ import LikeButton from '../../add/LikeButton';
 import DeleteButton from '../../add/DeleteButton';
 import RefreshButton from '../../add/RefreshButton';
 import sun from '../../../img/sun.png';
+import { NeedAuthModal } from '../modals/NeedAuthModal';
 
 export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onForecastClick }) => {
     const apiKey = '62bf88a778653acc6a38cfb2f80523b2';
@@ -11,6 +12,7 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
     const [invalidCities, setInvalidCities] = useState([]);
     const [removing, setRemoving] = useState({});
     const [activeButton, setActiveButton] = useState({});
+    const [showAuthModal, setShowAuthModal] = useState(false);
 
     const normalize = (str) => str.trim().toLowerCase();
 
@@ -47,6 +49,12 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
         }, 800);
     };
 
+    const requireAuth = (callback) => {
+        const loggedIn = localStorage.getItem('authToken');
+        if (loggedIn) callback();
+        else setShowAuthModal(true);
+    };
+
     return (
         <section className="weather">
             <div className="container">
@@ -70,23 +78,22 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
                                 <div className="time-date">
                                     <div className="time">{timeStr}</div>
                                     <button className={`more-btn ${activeButton[cityNorm] === 'forecast' ? 'active' : ''}`}
-                                        onClick={() => { onForecastClick(cityNorm); setActiveButton({ [cityNorm]: 'forecast' }); }}>
+                                        onClick={() => requireAuth(() => { onForecastClick(cityNorm); setActiveButton({ [cityNorm]: 'forecast' }); })}>
                                         Forecast
                                     </button>
                                     <div className="date">{dateStr} | {dayStr}</div>
                                 </div>
 
                                 <img className="weather-icon" src={sun} alt="sun" />
-
                                 <div className="weather-temp">{Math.round(weather.main?.temp) || 0}°C</div>
 
                                 <div className="weather-actions">
                                     <RefreshButton onClick={() => { }} />
                                     <LikeButton
                                         isActive={favorites.includes(cityNorm)}
-                                        onClick={() => onLike(cityNorm)}
+                                        onClick={() => requireAuth(() => onLike(cityNorm))}
                                     />
-                                    <button className="more-btn" onClick={() => onMoreClick(cityNorm)}>See more</button>
+                                    <button className="more-btn" onClick={() => requireAuth(() => onMoreClick(cityNorm))}>See more</button>
                                     <DeleteButton onClick={() => handleDelete(cityNorm)} />
                                 </div>
                             </li>
@@ -112,14 +119,14 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
                                 <div className="like-wrapper">
                                     <LikeButton
                                         isActive={favorites.includes(cityNorm)}
-                                        onClick={() => onLike(cityNorm)}
+                                        onClick={() => requireAuth(() => onLike(cityNorm))}
                                     />
                                 </div>
 
                                 <div className="time-date">
                                     <div className="time">{timeStr}</div>
                                     <button className={`more-btn ${activeButton[cityNorm] === 'forecast' ? 'active' : ''}`}
-                                        onClick={() => { onForecastClick(cityNorm); setActiveButton({ [cityNorm]: 'forecast' }); }}>
+                                        onClick={() => requireAuth(() => { onForecastClick(cityNorm); setActiveButton({ [cityNorm]: 'forecast' }); })}>
                                         Forecast
                                     </button>
                                     <div className="date">{dateStr} | {dayStr}</div>
@@ -136,6 +143,7 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
                     })}
                 </ul>
             </div>
+            {showAuthModal && <NeedAuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />}
         </section>
     );
 };

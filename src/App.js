@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import './dstyle.css';
 import './App.css';
 
-import { Header } from './components/section/header/Header';
-import { Hero } from './components/section/hero/Hero';
-import { Weather } from './components/section/weather/Weather';
-import { WeatherParam } from './components/section/weatherParam/WeatherParam';
-import { Forecast } from './components/section/forecast/Forecast';
-import { Pets } from './components/section/pets/Pets';
-import { Nature } from './components/section/nature/Nature';
-import { Signup } from './components/section/signup/Signup';
-import { Footer } from './components/section/footer/Footer';
+import { Header } from './components/section/header/Header.jsx';
+import { Hero } from './components/section/hero/Hero.jsx';
+import { Weather } from './components/section/weather/Weather.jsx';
+import { WeatherParam } from './components/section/weatherParam/WeatherParam.jsx';
+import { Forecast } from './components/section/forecast/Forecast.jsx';
+import { Pets } from './components/section/pets/Pets.jsx';
+import { Nature } from './components/section/nature/Nature.jsx';
+import { SignUp } from './components/section/auth/SignUp.jsx';
+import { SignIn } from './components/section/auth/SignIn.jsx';
+import { Footer } from './components/section/footer/Footer.jsx';
 
 function App() {
   const [cities, setCities] = useState(() => {
@@ -25,6 +26,8 @@ function App() {
 
   const [selectedCity, setSelectedCity] = useState(null);
   const [forecastCity, setForecastCity] = useState(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authType, setAuthType] = useState('signin');
 
   useEffect(() => {
     localStorage.setItem('cities', JSON.stringify(cities));
@@ -56,27 +59,39 @@ function App() {
     }
   };
 
+  const requireAuth = (callback) => {
+    const loggedIn = localStorage.getItem('authToken');
+    if (loggedIn) {
+      callback();
+    } else {
+      setAuthType('signin');
+      setShowAuthModal(true);
+    }
+  };
+
+  const handleAuthClose = () => setShowAuthModal(false);
+
   return (
     <>
-      <Header />
+      <Header onAuthClick={() => { setAuthType('signup'); setShowAuthModal(true); }} />
       <Hero addCity={addCity} />
-
       <Weather
         cities={cities}
         favorites={favorites}
         onDelete={deleteCity}
-        onLike={toggleFavorite}
-        onMoreClick={setSelectedCity}
-        onForecastClick={setForecastCity}
+        onLike={(city) => requireAuth(() => toggleFavorite(city))}
+        onMoreClick={(city) => requireAuth(() => setSelectedCity(city))}
+        onForecastClick={(city) => requireAuth(() => setForecastCity(city))}
       />
-
       {selectedCity && <WeatherParam city={selectedCity} />}
       {forecastCity && <Forecast city={forecastCity} />}
-
       <Pets />
       <Nature />
-      <Signup />
       <Footer />
+      {showAuthModal && (authType === 'signin'
+        ? <SignIn onClose={handleAuthClose} switchAuth={() => setAuthType('signup')} />
+        : <SignUp onClose={handleAuthClose} switchAuth={() => setAuthType('signin')} />
+      )}
     </>
   );
 }
