@@ -1,57 +1,51 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const cors = require('cors')
-const path = require('path')
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
-const app = express()
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-app.use(express.json())
-app.use(cors())
+const PORT = process.env.PORT || 8080;
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
-const User = mongoose.model('User', new mongoose.Schema({
-    email: { type: String, unique: true },
-    password: String
-}))
+const userSchema = new mongoose.Schema({
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+});
 
-app.post('/api/signup', async (req, res) => {
-    const { email, password } = req.body
-    if (!email || !password) return res.status(400).json({ message: 'Fill fields' })
+const User = mongoose.model("User", userSchema);
 
-    const exists = await User.findOne({ email })
-    if (exists) return res.status(400).json({ message: 'User exists' })
+app.post("/api/signup", async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ message: "Missing fields" });
+    const exists = await User.findOne({ email });
+    if (exists) return res.status(400).json({ message: "User exists" });
+    const hashed = await bcrypt.hash(password, 10);
+    const user = new User({ email, password: hashed });
+    await user.save();
+    res.status(201).json({ message: "User created" });
+});
 
-    const hashed = await bcrypt.hash(password, 10)
-    await User.create({ email, password: hashed })
+app.post("/api/signin", async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ message: "Missing fields" });
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) return res.status(400).json({ message: "Invalid credentials" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "secret", { expiresIn: "1d" });
+    res.json({ token });
+});
 
-    res.json({ message: 'User created' })
-})
+app.get("/", (req, res) => res.send("Server is running"));
 
-app.post('/api/signin', async (req, res) => {
-    const { email, password } = req.body
-
-    const user = await User.findOne({ email })
-    if (!user) return res.status(400).json({ message: 'Invalid credentials' })
-
-    const valid = await bcrypt.compare(password, user.password)
-    if (!valid) return res.status(400).json({ message: 'Invalid credentials' })
-
-    const token = jwt.sign(
-        { id: user._id },
-        process.env.JWT_SECRET,
-        { expiresIn: '7d' }
-    )
-
-    res.json({ token })
-})
-
-app.use(express.static(path.join(__dirname, 'build')))
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'))
-})
-
-app.listen(process.env.PORT || 8080)
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
