@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './dstyle.css';
 import './App.css';
-
 import { Header } from './components/section/header/Header.jsx';
 import { Hero } from './components/section/hero/Hero.jsx';
 import { Weather } from './components/section/weather/Weather.jsx';
