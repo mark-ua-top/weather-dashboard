@@ -1,17 +1,15 @@
 import express from "express";
 import cors from "cors";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const users = []; // тимчасове сховище
-
+const users = [];
 const JWT_SECRET = "your_super_secret_key";
 
-// REGISTER
 app.post("/api/register", async (req, res) => {
     const { email, password } = req.body;
 
