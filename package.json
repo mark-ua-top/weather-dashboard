@@ -1,5 +1,4 @@
 {
-  "homepage": "https://mark-ua-top.github.io/weather-dashboard/",
   "name": "weather-dashboard",
   "version": "0.1.0",
   "private": true,
@@ -14,6 +13,7 @@
     "bcryptjs": "^3.0.3",
     "chart.js": "^4.5.1",
     "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "formik": "^2.4.9",
     "gh-pages": "^6.3.0",
@@ -34,8 +34,8 @@
     "yaml": "^2.8.2"
   },
   "scripts": {
-    "start-server": "node server.js",
-    "start": "react-scripts start",
+    "start": "node server.js",
+    "start-client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -72,7 +72,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "bugs": {
     "url": "https://github.com/mark-ua-top/weather-dashboard/issues"
   }
