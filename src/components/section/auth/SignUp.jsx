@@ -7,7 +7,6 @@ export const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [message, setMessage] = useState('');
 
-    // Хмарний API на Railway
     const API_URL = 'https://cheerful-fascination.up.railway.app/api';
 
     const handleSignUp = async (e) => {
@@ -23,12 +22,13 @@ export const SignUp = () => {
             const res = await fetch(`${API_URL}/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password }) // password буде хешуватися на сервері
+                body: JSON.stringify({ username, email, password })
             });
 
             const data = await res.json();
+
             if (!res.ok) {
-                setMessage(data.error || 'Error creating user');
+                setMessage(data.message || 'Error creating user');
             } else {
                 setMessage(data.message || 'User created successfully');
                 setUsername('');
@@ -64,10 +64,7 @@ export const SignUp = () => {
                         onChange={e => setPassword(e.target.value)}
                         placeholder="Password"
                     />
-                    <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                    >
+                    <button type="button" onClick={() => setShowPassword(!showPassword)}>
                         {showPassword ? 'Hide' : 'Show'}
                     </button>
                 </div>

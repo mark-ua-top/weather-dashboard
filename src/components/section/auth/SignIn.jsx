@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from './AuthContext';
 
 export const SignIn = () => {
     const [usernameOrEmail, setUsernameOrEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [message, setMessage] = useState('');
-    const [userData, setUserData] = useState(null);
+    const { login } = useContext(AuthContext);
 
     const API_URL = 'https://cheerful-fascination.up.railway.app/api';
 
     const handleSignIn = async (e) => {
         e.preventDefault();
         setMessage('');
-        setUserData(null);
 
         if (!usernameOrEmail || !password) {
             setMessage('All fields required');
@@ -29,9 +29,9 @@ export const SignIn = () => {
             const data = await res.json();
 
             if (!res.ok) {
-                setMessage(data.error || 'Login failed');
+                setMessage(data.message || 'Login failed');
             } else {
-                setUserData(data); // { username, email, avatar }
+                login(data);
                 setMessage('Logged in successfully');
                 setUsernameOrEmail('');
                 setPassword('');
@@ -65,16 +65,7 @@ export const SignIn = () => {
                 </div>
                 <button type="submit">Sign In</button>
             </form>
-
             {message && <div className="message">{message}</div>}
-
-            {userData && (
-                <div className="user-info">
-                    <p>Username: {userData.username}</p>
-                    <p>Email: {userData.email}</p>
-                    <img src={userData.avatar} alt="avatar" width={80} />
-                </div>
-            )}
         </div>
     );
 };

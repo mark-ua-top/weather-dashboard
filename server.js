@@ -22,6 +22,7 @@ mongoose.connect(process.env.MONGO_URI)
     });
 
 const userSchema = new mongoose.Schema({
+    username: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true }
 });
@@ -30,24 +31,17 @@ const User = mongoose.model("User", userSchema);
 
 app.post("/api/signup", async (req, res) => {
     try {
-        const { email, password } = req.body;
-
-        if (!email || !password)
-            return res.status(400).json({ message: "Missing fields" });
+        const { username, email, password } = req.body;
+        if (!email || !password) return res.status(400).json({ message: "Missing fields" });
 
         const existing = await User.findOne({ email });
-        if (existing)
-            return res.status(400).json({ message: "User already exists" });
+        if (existing) return res.status(400).json({ message: "User already exists" });
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = await User.create({
-            email,
-            password: hashedPassword
-        });
+        await User.create({ username, email, password: hashedPassword });
 
         res.status(201).json({ message: "User created" });
-
     } catch (err) {
         res.status(500).json({ message: "Server error" });
     }
@@ -55,27 +49,18 @@ app.post("/api/signup", async (req, res) => {
 
 app.post("/api/signin", async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { usernameOrEmail, password } = req.body;
+        if (!usernameOrEmail || !password) return res.status(400).json({ message: "Missing fields" });
 
-        if (!email || !password)
-            return res.status(400).json({ message: "Missing fields" });
-
-        const user = await User.findOne({ email });
-        if (!user)
-            return res.status(400).json({ message: "Invalid credentials" });
+        const user = await User.findOne({ $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }] });
+        if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
         const valid = await bcrypt.compare(password, user.password);
-        if (!valid)
-            return res.status(400).json({ message: "Invalid credentials" });
+        if (!valid) return res.status(400).json({ message: "Invalid credentials" });
 
-        const token = jwt.sign(
-            { userId: user._id },
-            process.env.JWT_SECRET,
-            { expiresIn: "1d" }
-        );
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
-        res.json({ token });
-
+        res.json({ token, username: user.username, email: user.email });
     } catch (err) {
         res.status(500).json({ message: "Server error" });
     }
@@ -85,6 +70,4 @@ app.get("/", (req, res) => {
     res.send("Backend working");
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
