@@ -9,17 +9,23 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-const allowedOrigin = "https://weather-dashboardsmark.vercel.app";
 
-app.use(cors({ origin: allowedOrigin, optionsSuccessStatus: 200 }));
+const allowedOrigins = [
+    "http://localhost:5000",
+    "https://weather-dashboardsmark.vercel.app"
+];
+
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true,
+    optionsSuccessStatus: 200
+}));
+
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB connected"))
-    .catch(err => {
-        console.error("Mongo error:", err);
-        process.exit(1);
-    });
+    .catch(err => { console.error("Mongo error:", err); process.exit(1); });
 
 const userSchema = new mongoose.Schema({
     username: { type: String },
@@ -28,6 +34,8 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model("User", userSchema);
+
+app.options("*", cors());
 
 app.post("/api/signup", async (req, res) => {
     try {
@@ -65,8 +73,6 @@ app.post("/api/signin", async (req, res) => {
     }
 });
 
-app.get("/", (req, res) => {
-    res.send("Backend working");
-});
+app.get("/", (req, res) => { res.send("Backend working"); });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
