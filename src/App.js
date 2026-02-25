@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './dstyle.css';
 import './App.css';
+import '../src/components/section/auth/auth.css';
 import { Header } from './components/section/header/Header.jsx';
 import { Hero } from './components/section/hero/Hero.jsx';
 import { Weather } from './components/section/weather/Weather.jsx';
@@ -72,13 +73,7 @@ function App() {
 
   return (
     <>
-      <Header
-        onAuthClick={() => {
-          console.log("CLICK WORKS");
-          setAuthType('signup');
-          setShowAuthModal(true);
-        }}
-      />
+      <Header onAuthClick={() => { setAuthType('signup'); setShowAuthModal(true); }} />
       <Hero addCity={addCity} />
       <Weather
         cities={cities}
@@ -93,9 +88,19 @@ function App() {
       <Pets />
       <Nature />
       <Footer />
-      {showAuthModal && (authType === 'signin'
-        ? <SignIn onClose={handleAuthClose} switchAuth={() => setAuthType('signup')} />
-        : <SignUp onClose={handleAuthClose} switchAuth={() => setAuthType('signin')} />
+
+      {/* Auth Modal */}
+      {showAuthModal && (
+        <div className="modal" onClick={handleAuthClose}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="close-btn" onClick={handleAuthClose}>×</button>
+            {authType === 'signin' ? (
+              <SignIn onClose={handleAuthClose} switchAuth={() => setAuthType('signup')} />
+            ) : (
+              <SignUp onClose={handleAuthClose} switchAuth={() => setAuthType('signin')} />
+            )}
+          </div>
+        </div>
       )}
     </>
   );
