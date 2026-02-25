@@ -72,7 +72,13 @@ function App() {
 
   return (
     <>
-      <Header onAuthClick={() => { setAuthType('signup'); setShowAuthModal(true); }} />
+      <Header
+        onAuthClick={() => {
+          console.log("CLICK WORKS");
+          setAuthType('signup');
+          setShowAuthModal(true);
+        }}
+      />
       <Hero addCity={addCity} />
       <Weather
         cities={cities}
