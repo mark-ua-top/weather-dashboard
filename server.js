@@ -1,18 +1,18 @@
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
-
+const PORT = process.env.PORT || 8080;
 const allowedOrigin = "https://weather-dashboardsmark.vercel.app";
 
 app.use(cors({ origin: allowedOrigin, optionsSuccessStatus: 200 }));
 app.use(express.json());
-
-const PORT = process.env.PORT || 8080;
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB connected"))
