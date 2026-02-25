@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './dstyle.css';
 import './App.css';
-import '../src/components/section/auth/auth.css';
 import { Header } from './components/section/header/Header.jsx';
 import { Hero } from './components/section/hero/Hero.jsx';
 import { Weather } from './components/section/weather/Weather.jsx';
@@ -12,18 +11,17 @@ import { Nature } from './components/section/nature/Nature.jsx';
 import { SignUp } from './components/section/auth/SignUp.jsx';
 import { SignIn } from './components/section/auth/SignIn.jsx';
 import { Footer } from './components/section/footer/Footer.jsx';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const [cities, setCities] = useState(() => {
     const saved = localStorage.getItem('cities');
     return saved ? JSON.parse(saved) : [];
   });
-
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('favorites');
     return saved ? JSON.parse(saved) : [];
   });
-
   const [selectedCity, setSelectedCity] = useState(null);
   const [forecastCity, setForecastCity] = useState(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -88,20 +86,11 @@ function App() {
       <Pets />
       <Nature />
       <Footer />
-
-      {/* Auth Modal */}
-      {showAuthModal && (
-        <div className="modal" onClick={handleAuthClose}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <button className="close-btn" onClick={handleAuthClose}>×</button>
-            {authType === 'signin' ? (
-              <SignIn onClose={handleAuthClose} switchAuth={() => setAuthType('signup')} />
-            ) : (
-              <SignUp onClose={handleAuthClose} switchAuth={() => setAuthType('signin')} />
-            )}
-          </div>
-        </div>
+      {showAuthModal && (authType === 'signin'
+        ? <SignIn onClose={handleAuthClose} switchAuth={() => setAuthType('signup')} />
+        : <SignUp onClose={handleAuthClose} switchAuth={() => setAuthType('signin')} />
       )}
+      <Analytics />
     </>
   );
 }
