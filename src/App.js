@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './dstyle.css';
 import './App.css';
+import '../src/components/section/auth/auth.css';
 import { Header } from './components/section/header/Header.jsx';
 import { Hero } from './components/section/hero/Hero.jsx';
 import { Weather } from './components/section/weather/Weather.jsx';
@@ -18,10 +19,12 @@ function App() {
     const saved = localStorage.getItem('cities');
     return saved ? JSON.parse(saved) : [];
   });
+
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('favorites');
     return saved ? JSON.parse(saved) : [];
   });
+
   const [selectedCity, setSelectedCity] = useState(null);
   const [forecastCity, setForecastCity] = useState(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -86,9 +89,19 @@ function App() {
       <Pets />
       <Nature />
       <Footer />
-      {showAuthModal && (authType === 'signin'
-        ? <SignIn onClose={handleAuthClose} switchAuth={() => setAuthType('signup')} />
-        : <SignUp onClose={handleAuthClose} switchAuth={() => setAuthType('signin')} />
+
+      {/* Auth Modal */}
+      {showAuthModal && (
+        <div className="modal" onClick={handleAuthClose}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="close-btn" onClick={handleAuthClose}>×</button>
+            {authType === 'signin' ? (
+              <SignIn onClose={handleAuthClose} switchAuth={() => setAuthType('signup')} />
+            ) : (
+              <SignUp onClose={handleAuthClose} switchAuth={() => setAuthType('signin')} />
+            )}
+          </div>
+        </div>
       )}
       <Analytics />
     </>
