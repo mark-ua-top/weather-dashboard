@@ -1,32 +1,23 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from './AuthContext';
 
-export const SignIn = () => {
+export const SignIn = ({ onClose, switchAuth }) => {
     const [usernameOrEmail, setUsernameOrEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [message, setMessage] = useState('');
     const { login } = useContext(AuthContext);
 
-    const API_URL = 'https://cheerful-fascination.up.railway.app/api';
+    const API_URL = 'https://cheerful-fascination.up.railway.app';
 
     const handleSignIn = async (e) => {
         e.preventDefault();
         setMessage('');
 
-        if (!usernameOrEmail || !password) {
-            setMessage('All fields required');
-            return;
-        }
-
         try {
             const res = await fetch(`${API_URL}/signin`, {
                 method: 'POST',
-                mode: "cors",
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Accept": "application/json"
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ usernameOrEmail, password })
             });
 
@@ -36,12 +27,9 @@ export const SignIn = () => {
                 setMessage(data.message || 'Login failed');
             } else {
                 login(data);
-                setMessage('Logged in successfully');
-                setUsernameOrEmail('');
-                setPassword('');
+                onClose();
             }
         } catch (err) {
-            console.error(err);
             setMessage('Server error');
         }
     };
@@ -55,20 +43,27 @@ export const SignIn = () => {
                     value={usernameOrEmail}
                     onChange={e => setUsernameOrEmail(e.target.value)}
                     placeholder="Username or Email"
+                    required
                 />
-                <div>
+                <div style={{ position: "relative" }}>
                     <input
                         type={showPassword ? 'text' : 'password'}
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         placeholder="Password"
+                        required
                     />
-                    <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        style={{ position: "absolute", right: 0, top: 0 }}
+                    >
                         {showPassword ? 'Hide' : 'Show'}
                     </button>
                 </div>
                 <button type="submit">Sign In</button>
             </form>
+            <p>Don't have an account? <span onClick={switchAuth} style={{ cursor: 'pointer', color: 'blue' }}>Sign Up</span></p>
             {message && <div className="message">{message}</div>}
         </div>
     );

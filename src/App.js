@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './dstyle.css';
 import './App.css';
 import '../src/components/section/auth/auth.css';
@@ -12,19 +12,13 @@ import { Nature } from './components/section/nature/Nature.jsx';
 import { SignUp } from './components/section/auth/SignUp.jsx';
 import { SignIn } from './components/section/auth/SignIn.jsx';
 import { Footer } from './components/section/footer/Footer.jsx';
+import { AuthContext } from './components/section/auth/AuthContext.jsx';
 import { Analytics } from '@vercel/analytics/react';
 
 function App() {
-  const [cities, setCities] = useState(() => {
-    const saved = localStorage.getItem('cities');
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [favorites, setFavorites] = useState(() => {
-    const saved = localStorage.getItem('favorites');
-    return saved ? JSON.parse(saved) : [];
-  });
-
+  const { user } = useContext(AuthContext);
+  const [cities, setCities] = useState(() => JSON.parse(localStorage.getItem('cities')) || []);
+  const [favorites, setFavorites] = useState(() => JSON.parse(localStorage.getItem('favorites')) || []);
   const [selectedCity, setSelectedCity] = useState(null);
   const [forecastCity, setForecastCity] = useState(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -32,11 +26,8 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem('cities', JSON.stringify(cities));
-  }, [cities]);
-
-  useEffect(() => {
     localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
+  }, [cities, favorites]);
 
   const addCity = (city) => {
     const normalized = city.trim().toLowerCase();
@@ -53,16 +44,11 @@ function App() {
 
   const toggleFavorite = (city) => {
     const normalized = city.toLowerCase();
-    if (favorites.includes(normalized)) {
-      setFavorites(favorites.filter(f => f !== normalized));
-    } else {
-      setFavorites([normalized, ...favorites]);
-    }
+    setFavorites(prev => prev.includes(normalized) ? prev.filter(f => f !== normalized) : [normalized, ...prev]);
   };
 
   const requireAuth = (callback) => {
-    const loggedIn = localStorage.getItem('authToken');
-    if (loggedIn) {
+    if (user) {
       callback();
     } else {
       setAuthType('signin');
@@ -90,7 +76,6 @@ function App() {
       <Nature />
       <Footer />
 
-      {/* Auth Modal */}
       {showAuthModal && (
         <div className="modal" onClick={handleAuthClose}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>

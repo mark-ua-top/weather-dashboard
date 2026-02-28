@@ -14,8 +14,10 @@ export const SignUp = ({ onClose }) => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, email, password })
             });
+
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || "Error");
+
             alert("User created");
             onClose();
         } catch (err) {
@@ -38,7 +40,11 @@ export const SignUp = ({ onClose }) => {
                             type={showPassword ? "text" : "password"}
                             required
                         />
-                        <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: "absolute", right: 0 }}>
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            style={{ position: "absolute", right: 0, top: 0 }}
+                        >
                             {showPassword ? "Hide" : "Show"}
                         </button>
                     </div>
