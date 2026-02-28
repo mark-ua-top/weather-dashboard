@@ -16,7 +16,13 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
     optionsSuccessStatus: 200
 }));
@@ -25,25 +31,27 @@ app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB connected"))
-    .catch(err => { console.error("Mongo error:", err); process.exit(1); });
+    .catch(err => console.error("Mongo error:", err));
 
 const userSchema = new mongoose.Schema({
-    username: { type: String },
+    username: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true }
 });
 
 const User = mongoose.model("User", userSchema);
 
-app.options("*", cors());
+app.get("/", (req, res) => {
+    res.send("Backend working");
+});
 
 app.post("/api/signup", async (req, res) => {
     try {
         const { username, email, password } = req.body;
-        if (!email || !password) return res.status(400).json({ message: "Missing fields" });
+        if (!username || !email || !password) return res.status(400).json({ message: "Missing fields" });
 
         const existing = await User.findOne({ email });
-        if (existing) return res.status(400).json({ message: "User already exists" });
+        if (existing) return res.status(400).json({ message: "User exists" });
 
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.create({ username, email, password: hashedPassword });
@@ -59,7 +67,9 @@ app.post("/api/signin", async (req, res) => {
         const { usernameOrEmail, password } = req.body;
         if (!usernameOrEmail || !password) return res.status(400).json({ message: "Missing fields" });
 
-        const user = await User.findOne({ $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }] });
+        const user = await User.findOne({
+            $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }]
+        });
         if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
         const valid = await bcrypt.compare(password, user.password);
@@ -72,7 +82,5 @@ app.post("/api/signin", async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
-
-app.get("/", (req, res) => { res.send("Backend working"); });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
