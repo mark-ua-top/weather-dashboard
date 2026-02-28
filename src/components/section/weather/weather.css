@@ -1,108 +1,138 @@
 .weather-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 40px;
-    padding: 0;
+    padding: 20px;
     list-style: none;
+    justify-items: center;
 }
 
 .weather-item,
 .weather-item-invalid {
-    background: #ececec;
-    border-radius: 25px;
-    padding: 20px;
+    background: #EAEAEA;
+    border-radius: 20px;
+    padding: 25px 20px;
     text-align: center;
-    width: 250px;
-    height: 430px;
+    width: 320px;
+    height: 480px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    border: 1px solid black;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: none;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
     position: relative;
-}
-
-.weather-item-invalid {
-    background: #f8d7da;
-    border-color: #f5c2c7;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
 }
 
 .weather-header {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 400;
+    color: #000;
+    margin-bottom: 10px;
 }
 
-.like-wrapper {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    margin: 8px 0;
+.weather-time {
+    font-size: 54px;
+    font-weight: 400;
+    margin: 10px 0;
+    color: #000;
 }
 
-.time-date {
+.forecast-btn {
+    background: #FFB36C;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #000;
+    margin-bottom: 15px;
+    transition: background 0.3s;
+}
+
+.weather-date {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: #333;
-    width: 100%;
+    gap: 12px;
+    font-size: 18px;
+    color: #000;
+    margin-bottom: 20px;
 }
 
-.weather-icon {
-    font-size: 48px;
-    margin: 12px 0;
+.separator {
+    color: #000;
+    font-weight: 300;
 }
 
-.weather-temp {
-    font-size: 32px;
-    font-weight: 600;
+.weather-icon-main {
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+    margin: 10px 0;
 }
 
-.weather-actions {
+.weather-temp-display {
+    font-size: 64px;
+    font-weight: 400;
+    margin-bottom: 30px;
+    color: #000;
+}
+
+.weather-footer-actions {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
     margin-top: auto;
 }
 
-.more-btn {
+.see-more-action {
     background: #FFB36C;
     border: none;
-    padding: 6px 16px;
-    border-radius: 12px;
+    padding: 8px 20px;
+    border-radius: 15px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 16px;
+    color: #000;
 }
 
-.more-btn:hover {
-    background: #ffa54d;
+.weather-footer-actions button:not(.see-more-action) {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.weather-footer-actions img,
+.weather-footer-actions svg {
+    width: 28px;
+    height: 28px;
+}
+
+.weather-item-invalid {
+    background: #f8d7da;
 }
 
 .pieces-container {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 2px;
     pointer-events: none;
+    z-index: 10;
 }
 
 .piece {
     background: #d1d1d1;
     border-radius: 4px;
-    width: 100%;
-    height: 100%;
     animation: fadeOut 0.8s forwards;
 }
 
@@ -116,30 +146,4 @@
         opacity: 0;
         transform: scale(0.5);
     }
-}
-
-.weather-header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    font-size: 18px;
-}
-
-.time {
-    font-size: 42px;
-    font-weight: 500;
-}
-
-.date-row {
-    display: flex;
-    gap: 10px;
-    font-size: 18px;
-}
-
-.weather-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-top: auto;
 }
