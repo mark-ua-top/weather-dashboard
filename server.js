@@ -7,7 +7,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
+
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "https://weather-dashboardsmark.vercel.app");
