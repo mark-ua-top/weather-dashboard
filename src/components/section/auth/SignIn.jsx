@@ -8,14 +8,12 @@ export const SignIn = ({ onClose, switchAuth }) => {
     const [message, setMessage] = useState('');
     const { login } = useContext(AuthContext);
 
-    const API_URL = 'https://cheerful-fascination.up.railway.app';
-
     const handleSignIn = async (e) => {
         e.preventDefault();
         setMessage('');
 
         try {
-            const res = await fetch(`${API_URL}/signin`, {
+            const res = await fetch("https://cheerful-fascination.up.railway.app/api/signin", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ usernameOrEmail, password })
