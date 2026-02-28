@@ -53,11 +53,8 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
     };
 
     const requireAuth = (callback) => {
-        if (user) {
-            callback();
-        } else {
-            setShowAuthModal(true);
-        }
+        if (user) callback();
+        else setShowAuthModal(true);
     };
 
     return (
@@ -68,79 +65,46 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
                         const cityNorm = weather.norm;
                         const now = new Date();
                         const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                        const dateStr = now.toLocaleDateString();
-                        const dayStr = now.toLocaleDateString([], { weekday: 'long' });
+                        const dateStr = now.toLocaleDateString('uk-UA');
+                        const dayStr = now.toLocaleDateString('en-US', { weekday: 'long' });
 
                         return (
                             <li key={weather.id} className={`weather-item ${removing[cityNorm] ? 'removing' : ''}`}>
                                 {removing[cityNorm] && <div className="pieces-container">{Array.from({ length: 12 }).map((_, i) => <div key={i} className="piece" />)}</div>}
 
                                 <div className="weather-header">
-                                    <span>{weather.name}</span>
-                                    <span>{weather.sys?.country}</span>
+                                    <span className="city-name">{weather.name}</span>
+                                    <span className="country-name">{weather.sys?.country === 'CZ' ? 'Czech Republic' : weather.sys?.country}</span>
                                 </div>
 
-                                <div className="time-date">
-                                    <div className="time">{timeStr}</div>
-                                    <button className={`more-btn ${activeButton[cityNorm] === 'forecast' ? 'active' : ''}`}
-                                        onClick={() => requireAuth(() => { onForecastClick(cityNorm); setActiveButton({ [cityNorm]: 'forecast' }); })}>
-                                        Forecast
-                                    </button>
-                                    <div className="date">{dateStr} | {dayStr}</div>
+                                <div className="time">{timeStr}</div>
+
+                                <button
+                                    className={`forecast-btn ${activeButton[cityNorm] === 'forecast' ? 'active' : ''}`}
+                                    onClick={() => requireAuth(() => { onForecastClick(cityNorm); setActiveButton({ [cityNorm]: 'forecast' }); })}
+                                >
+                                    Hourly forecast
+                                </button>
+
+                                <div className="date-row">
+                                    <span>{dateStr}</span>
+                                    <span className="separator">|</span>
+                                    <span>{dayStr}</span>
                                 </div>
 
-                                <img className="weather-icon" src={sun} alt="sun" />
+                                <img className="weather-icon" src={sun} alt="weather status" />
+
                                 <div className="weather-temp">{Math.round(weather.main?.temp) || 0}°C</div>
 
-                                <div className="weather-actions">
+                                <div className="weather-footer">
                                     <RefreshButton onClick={() => { }} />
                                     <LikeButton
                                         isActive={favorites.includes(cityNorm)}
                                         onClick={() => requireAuth(() => onLike(cityNorm))}
                                     />
-                                    <button className="more-btn" onClick={() => requireAuth(() => onMoreClick(cityNorm))}>See more</button>
-                                    <DeleteButton onClick={() => handleDelete(cityNorm)} />
-                                </div>
-                            </li>
-                        );
-                    })}
-
-                    {invalidCities.map(city => {
-                        const cityNorm = normalize(city);
-                        const now = new Date();
-                        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                        const dateStr = now.toLocaleDateString();
-                        const dayStr = now.toLocaleDateString([], { weekday: 'long' });
-
-                        return (
-                            <li key={city} className={`weather-item-invalid ${removing[cityNorm] ? 'removing' : ''}`}>
-                                {removing[cityNorm] && <div className="pieces-container">{Array.from({ length: 12 }).map((_, i) => <div key={i} className="piece" />)}</div>}
-
-                                <div className="weather-header">
-                                    <span>{city}</span>
-                                    <span>City not found</span>
-                                </div>
-
-                                <div className="like-wrapper">
-                                    <LikeButton
-                                        isActive={favorites.includes(cityNorm)}
-                                        onClick={() => requireAuth(() => onLike(cityNorm))}
-                                    />
-                                </div>
-
-                                <div className="time-date">
-                                    <div className="time">{timeStr}</div>
-                                    <button className={`more-btn ${activeButton[cityNorm] === 'forecast' ? 'active' : ''}`}
-                                        onClick={() => requireAuth(() => { onForecastClick(cityNorm); setActiveButton({ [cityNorm]: 'forecast' }); })}>
-                                        Forecast
+                                    <button className="see-more-btn" onClick={() => requireAuth(() => onMoreClick(cityNorm))}>
+                                        See more
                                     </button>
-                                    <div className="date">{dateStr} | {dayStr}</div>
-                                </div>
-
-                                <div className="weather-icon">❓</div>
-                                <div className="weather-temp">0°C</div>
-
-                                <div className="weather-actions">
                                     <DeleteButton onClick={() => handleDelete(cityNorm)} />
                                 </div>
                             </li>

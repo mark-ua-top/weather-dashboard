@@ -117,3 +117,29 @@
         transform: scale(0.5);
     }
 }
+
+.weather-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 18px;
+}
+
+.time {
+    font-size: 42px;
+    font-weight: 500;
+}
+
+.date-row {
+    display: flex;
+    gap: 10px;
+    font-size: 18px;
+}
+
+.weather-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: auto;
+}
