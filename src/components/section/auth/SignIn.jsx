@@ -22,7 +22,11 @@ export const SignIn = () => {
         try {
             const res = await fetch(`${API_URL}/signin`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                mode: "cors",
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Accept": "application/json"
+                },
                 body: JSON.stringify({ usernameOrEmail, password })
             });
 

@@ -11,7 +11,8 @@ export const SignUp = ({ onClose }) => {
         try {
             const res = await fetch("https://cheerful-fascination.up.railway.app/api/signup", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                mode: "cors",
+                headers: { "Content-Type": "application/json", "Accept": "application/json" },
                 body: JSON.stringify({ username, email, password })
             });
             const data = await res.json();
