@@ -67,7 +67,7 @@ export const SignIn = ({ onClose, switchAuth }) => {
 
             <p>
                 Don't have an account?{' '}
-                <span onClick={switchAuth} className="switch-link">
+                <span sr onClick={switchAuth} className="switch-link">
                     Sign Up
                 </span>
             </p>

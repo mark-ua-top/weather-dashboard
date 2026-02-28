@@ -38,7 +38,7 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
                     })
             )
         ).then(data => setWeatherData(data.filter(Boolean)));
-    }, [cities]);
+    }, [cities, apiKey]);
 
     const handleDelete = (city) => {
         setRemoving(prev => ({ ...prev, [city]: true }));
@@ -65,7 +65,7 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
                         const cityNorm = weather.norm;
                         const now = new Date();
                         const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                        const dateStr = now.toLocaleDateString('uk-UA');
+                        const dateStr = now.toLocaleDateString('uk-UA').replace(/\//g, '.');
                         const dayStr = now.toLocaleDateString('en-US', { weekday: 'long' });
 
                         return (
@@ -74,10 +74,10 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
 
                                 <div className="weather-header">
                                     <span className="city-name">{weather.name}</span>
-                                    <span className="country-name">{weather.sys?.country === 'CZ' ? 'Czech Republic' : weather.sys?.country}</span>
+                                    <span className="country-name">{weather.sys?.country}</span>
                                 </div>
 
-                                <div className="time">{timeStr}</div>
+                                <div className="weather-time">{timeStr}</div>
 
                                 <button
                                     className={`forecast-btn ${activeButton[cityNorm] === 'forecast' ? 'active' : ''}`}
@@ -86,23 +86,23 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
                                     Hourly forecast
                                 </button>
 
-                                <div className="date-row">
+                                <div className="weather-date">
                                     <span>{dateStr}</span>
                                     <span className="separator">|</span>
                                     <span>{dayStr}</span>
                                 </div>
 
-                                <img className="weather-icon" src={sun} alt="weather status" />
+                                <img className="weather-icon-main" src={sun} alt="weather icon" />
 
-                                <div className="weather-temp">{Math.round(weather.main?.temp) || 0}°C</div>
+                                <div className="weather-temp-display">{Math.round(weather.main?.temp) || 0}°C</div>
 
-                                <div className="weather-footer">
+                                <div className="weather-footer-actions">
                                     <RefreshButton onClick={() => { }} />
                                     <LikeButton
                                         isActive={favorites.includes(cityNorm)}
                                         onClick={() => requireAuth(() => onLike(cityNorm))}
                                     />
-                                    <button className="see-more-btn" onClick={() => requireAuth(() => onMoreClick(cityNorm))}>
+                                    <button className="see-more-action" onClick={() => requireAuth(() => onMoreClick(cityNorm))}>
                                         See more
                                     </button>
                                     <DeleteButton onClick={() => handleDelete(cityNorm)} />
