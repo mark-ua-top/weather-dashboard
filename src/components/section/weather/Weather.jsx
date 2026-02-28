@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './weather.css';
 import LikeButton from '../../add/LikeButton';
 import DeleteButton from '../../add/DeleteButton';
 import RefreshButton from '../../add/RefreshButton';
 import sun from '../../../img/sun.png';
 import { NeedAuthModal } from '../modals/NeedAuthModal';
+import { AuthContext } from '../auth/AuthContext';
 
 export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onForecastClick }) => {
     const apiKey = '62bf88a778653acc6a38cfb2f80523b2';
@@ -13,6 +14,8 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
     const [removing, setRemoving] = useState({});
     const [activeButton, setActiveButton] = useState({});
     const [showAuthModal, setShowAuthModal] = useState(false);
+
+    const { user } = useContext(AuthContext);
 
     const normalize = (str) => str.trim().toLowerCase();
 
@@ -26,7 +29,7 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
         setInvalidCities([]);
         Promise.all(
             cities.map(city =>
-                fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`)
+                fetch(`https://api.openweathermap.org{encodeURIComponent(city)}&appid=${apiKey}&units=metric`)
                     .then(res => res.json())
                     .then(data => data.cod === 200 ? { ...data, norm: normalize(city) } : (setInvalidCities(prev => [...prev, city]), null))
                     .catch(() => {
@@ -50,9 +53,11 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
     };
 
     const requireAuth = (callback) => {
-        const loggedIn = localStorage.getItem('authToken');
-        if (loggedIn) callback();
-        else setShowAuthModal(true);
+        if (user) {
+            callback();
+        } else {
+            setShowAuthModal(true);
+        }
     };
 
     return (
