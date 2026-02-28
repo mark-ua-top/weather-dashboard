@@ -110,6 +110,34 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
                             </li>
                         );
                     })}
+
+                    {invalidCities.map(city => {
+                        const cityNorm = normalize(city);
+                        const now = new Date();
+                        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        const dateStr = now.toLocaleDateString('uk-UA').replace(/\//g, '.');
+                        const dayStr = now.toLocaleDateString('en-US', { weekday: 'long' });
+
+                        return (
+                            <li key={city} className={`weather-item-invalid ${removing[cityNorm] ? 'removing' : ''}`}>
+                                <div className="weather-header">
+                                    <span className="city-name">{city}</span>
+                                    <span className="country-name">Error</span>
+                                </div>
+                                <div className="weather-time">{timeStr}</div>
+                                <div className="weather-date">
+                                    <span>{dateStr}</span>
+                                    <span className="separator">|</span>
+                                    <span>{dayStr}</span>
+                                </div>
+                                <div className="weather-icon-main">❓</div>
+                                <div className="weather-temp-display">N/A</div>
+                                <div className="weather-footer-actions">
+                                    <DeleteButton onClick={() => handleDelete(cityNorm)} />
+                                </div>
+                            </li>
+                        );
+                    })}
                 </ul>
             </div>
             {showAuthModal && <NeedAuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />}
