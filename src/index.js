@@ -2,7 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.js';
 import './index.css';
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+import { AuthProvider } from './components/section/auth/AuthContext.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+root.render(
+    <React.StrictMode>
+        <AuthProvider>
+            <App />
+        </AuthProvider>
+    </React.StrictMode>
+);
