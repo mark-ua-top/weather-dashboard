@@ -80,7 +80,7 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
                                 <div className="weather-time">{timeStr}</div>
 
                                 <button
-                                    className={`forecast-btn ${activeButton[cityNorm] === 'forecast' ? 'active' : ''}`}
+                                    className={`weather-forecast-btn ${activeButton[cityNorm] === 'forecast' ? 'active' : ''}`}
                                     onClick={() => requireAuth(() => { onForecastClick(cityNorm); setActiveButton({ [cityNorm]: 'forecast' }); })}
                                 >
                                     Hourly forecast
