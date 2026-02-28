@@ -27,14 +27,15 @@ export const SignIn = ({ onClose, switchAuth }) => {
                 login(data);
                 onClose();
             }
-        } catch (err) {
+        } catch {
             setMessage('Server error');
         }
     };
 
     return (
-        <div className="signin-form">
+        <div className="auth-form">
             <h2>Sign In</h2>
+
             <form onSubmit={handleSignIn}>
                 <input
                     type="text"
@@ -43,7 +44,8 @@ export const SignIn = ({ onClose, switchAuth }) => {
                     placeholder="Username or Email"
                     required
                 />
-                <div style={{ position: "relative" }}>
+
+                <div className="password-wrapper">
                     <input
                         type={showPassword ? 'text' : 'password'}
                         value={password}
@@ -54,14 +56,22 @@ export const SignIn = ({ onClose, switchAuth }) => {
                     <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        style={{ position: "absolute", right: 0, top: 0 }}
+                        className="show-btn"
                     >
                         {showPassword ? 'Hide' : 'Show'}
                     </button>
                 </div>
+
                 <button type="submit">Sign In</button>
             </form>
-            <p>Don't have an account? <span onClick={switchAuth} style={{ cursor: 'pointer', color: 'blue' }}>Sign Up</span></p>
+
+            <p>
+                Don't have an account?{' '}
+                <span onClick={switchAuth} className="switch-link">
+                    Sign Up
+                </span>
+            </p>
+
             {message && <div className="message">{message}</div>}
         </div>
     );

@@ -62,11 +62,6 @@ function App() {
 
   const handleAuthClose = () => setShowAuthModal(false);
 
-  const openSignIn = () => {
-    setAuthType('signin');
-    setShowAuthModal(true);
-  };
-
   const openSignUp = () => {
     setAuthType('signup');
     setShowAuthModal(true);
@@ -76,6 +71,7 @@ function App() {
     <>
       <Header onAuthClick={openSignUp} />
       <Hero addCity={addCity} />
+
       <Weather
         cities={cities}
         favorites={favorites}
@@ -84,24 +80,30 @@ function App() {
         onMoreClick={(city) => requireAuth(() => setSelectedCity(city))}
         onForecastClick={(city) => requireAuth(() => setForecastCity(city))}
       />
+
       {selectedCity && <WeatherParam city={selectedCity} />}
       {forecastCity && <Forecast city={forecastCity} />}
+
       <Pets />
       <Nature />
       <Footer />
 
       {showAuthModal && (
-        authType === 'signin' ? (
-          <SignIn
-            onClose={handleAuthClose}
-            switchToSignUp={() => setAuthType('signup')}
-          />
-        ) : (
-          <SignUp
-            onClose={handleAuthClose}
-            switchToSignIn={() => setAuthType('signin')}
-          />
-        )
+        <div className="modal-overlay" onClick={handleAuthClose}>
+          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+            {authType === 'signin' ? (
+              <SignIn
+                onClose={handleAuthClose}
+                switchAuth={() => setAuthType('signup')}
+              />
+            ) : (
+              <SignUp
+                onClose={handleAuthClose}
+                switchAuth={() => setAuthType('signin')}
+              />
+            )}
+          </div>
+        </div>
       )}
 
       <Analytics />
