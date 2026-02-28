@@ -13,7 +13,7 @@ export const SignIn = ({ onClose, switchAuth }) => {
         setMessage('');
 
         try {
-            const res = await fetch("https://cheerful-fascination.up.railway.app/api/signin", {
+            const res = await fetch("https://weather-dashboard-production-1731.up.railway.app/api/signin", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ usernameOrEmail, password })
