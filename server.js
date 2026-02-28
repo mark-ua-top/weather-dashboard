@@ -11,11 +11,14 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.use(cors({
-    origin: "*",
+    origin: "https://weather-dashboardsmark.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+    allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+    credentials: true,
+    optionsSuccessStatus: 200
 }));
 
+app.options("*", cors());
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)

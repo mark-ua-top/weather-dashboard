@@ -9,14 +9,17 @@ export const SignUp = ({ onClose }) => {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch("https://cheerful-fascination.up.railway.app/api/signup", {
+            const res = await fetch("https://cheerful-fascination.up.railway.app", {
                 method: "POST",
-                mode: "cors",
-                headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({ username, email, password })
             });
+
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || "Error");
+
             alert("User created");
             onClose();
         } catch (err) {
