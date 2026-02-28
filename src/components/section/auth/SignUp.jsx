@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./auth.css";
 
 export const SignUp = ({ onClose, switchToSignIn }) => {
     const [showPassword, setShowPassword] = useState(false);
@@ -48,7 +49,7 @@ export const SignUp = ({ onClose, switchToSignIn }) => {
                         required
                     />
 
-                    <div style={{ position: "relative" }}>
+                    <div className="password-wrapper">
                         <input
                             value={password}
                             onChange={e => setPassword(e.target.value)}
@@ -58,16 +59,8 @@ export const SignUp = ({ onClose, switchToSignIn }) => {
                         />
                         <button
                             type="button"
+                            className="show-btn"
                             onClick={() => setShowPassword(!showPassword)}
-                            style={{
-                                position: "absolute",
-                                right: "10px",
-                                top: "50%",
-                                transform: "translateY(-50%)",
-                                background: "none",
-                                border: "none",
-                                cursor: "pointer"
-                            }}
                         >
                             {showPassword ? "Hide" : "Show"}
                         </button>
@@ -76,23 +69,12 @@ export const SignUp = ({ onClose, switchToSignIn }) => {
                     <button type="submit">Sign Up</button>
                 </form>
 
-                <div style={{ marginTop: "15px", textAlign: "center" }}>
-                    <span>Already have an account? </span>
-                    <button
-                        type="button"
-                        onClick={switchToSignIn}
-                        style={{
-                            background: "none",
-                            border: "none",
-                            color: "#007bff",
-                            cursor: "pointer",
-                            textDecoration: "underline"
-                        }}
-                    >
+                <div className="auth-switch">
+                    <span>Already have an account?</span>
+                    <button type="button" onClick={switchToSignIn}>
                         Sign In
                     </button>
                 </div>
-
             </div>
         </div>
     );

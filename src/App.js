@@ -44,7 +44,11 @@ function App() {
 
   const toggleFavorite = (city) => {
     const normalized = city.toLowerCase();
-    setFavorites(prev => prev.includes(normalized) ? prev.filter(f => f !== normalized) : [normalized, ...prev]);
+    setFavorites(prev =>
+      prev.includes(normalized)
+        ? prev.filter(f => f !== normalized)
+        : [normalized, ...prev]
+    );
   };
 
   const requireAuth = (callback) => {
@@ -58,9 +62,19 @@ function App() {
 
   const handleAuthClose = () => setShowAuthModal(false);
 
+  const openSignIn = () => {
+    setAuthType('signin');
+    setShowAuthModal(true);
+  };
+
+  const openSignUp = () => {
+    setAuthType('signup');
+    setShowAuthModal(true);
+  };
+
   return (
     <>
-      <Header onAuthClick={() => { setAuthType('signup'); setShowAuthModal(true); }} />
+      <Header onAuthClick={openSignUp} />
       <Hero addCity={addCity} />
       <Weather
         cities={cities}
@@ -77,17 +91,19 @@ function App() {
       <Footer />
 
       {showAuthModal && (
-        <div className="modal" onClick={handleAuthClose}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <button className="close-btn" onClick={handleAuthClose}>×</button>
-            {authType === 'signin' ? (
-              <SignIn onClose={handleAuthClose} switchAuth={() => setAuthType('signup')} />
-            ) : (
-              <SignUp onClose={handleAuthClose} switchAuth={() => setAuthType('signin')} />
-            )}
-          </div>
-        </div>
+        authType === 'signin' ? (
+          <SignIn
+            onClose={handleAuthClose}
+            switchToSignUp={() => setAuthType('signup')}
+          />
+        ) : (
+          <SignUp
+            onClose={handleAuthClose}
+            switchToSignIn={() => setAuthType('signin')}
+          />
+        )
       )}
+
       <Analytics />
     </>
   );
