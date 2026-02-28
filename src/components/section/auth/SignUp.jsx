@@ -11,15 +11,11 @@ export const SignUp = ({ onClose }) => {
         try {
             const res = await fetch("https://cheerful-fascination.up.railway.app", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, email, password })
             });
-
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || "Error");
-
             alert("User created");
             onClose();
         } catch (err) {
@@ -32,20 +28,17 @@ export const SignUp = ({ onClose }) => {
             <div className="modal-content">
                 <button className="close-btn" onClick={onClose}>×</button>
                 <form onSubmit={onSubmit}>
-                    <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" />
-                    <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" type="email" />
+                    <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" required />
+                    <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" type="email" required />
                     <div style={{ position: "relative" }}>
                         <input
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             placeholder="Password"
                             type={showPassword ? "text" : "password"}
+                            required
                         />
-                        <button
-                            type="button"
-                            style={{ position: "absolute", right: 0, top: 0 }}
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
+                        <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: "absolute", right: 0 }}>
                             {showPassword ? "Hide" : "Show"}
                         </button>
                     </div>
