@@ -29,7 +29,7 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
         setInvalidCities([]);
         Promise.all(
             cities.map(city =>
-                fetch(`https://api.openweathermap.org{encodeURIComponent(city)}&appid=${apiKey}&units=metric`)
+                fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`)
                     .then(res => res.json())
                     .then(data => data.cod === 200 ? { ...data, norm: normalize(city) } : (setInvalidCities(prev => [...prev, city]), null))
                     .catch(() => {
