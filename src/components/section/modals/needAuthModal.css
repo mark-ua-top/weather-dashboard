@@ -1,4 +1,4 @@
-.auth-modal {
+.need-auth-modal {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.6);
@@ -10,7 +10,7 @@
     font-family: 'Montserrat Alternates';
 }
 
-.auth-modal__container {
+.need-auth-modal__container {
     background: #ffffff;
     padding: 40px;
     border-radius: 16px;
@@ -22,7 +22,7 @@
     text-align: center;
 }
 
-@keyframes authModalFade {
+@keyframes need-authModalFade {
     from {
         opacity: 0;
         transform: translateY(-20px) scale(0.95);
@@ -34,7 +34,7 @@
     }
 }
 
-.auth-modal__close-button {
+.need-auth-modal__close-button {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -47,25 +47,25 @@
     line-height: 1;
 }
 
-.auth-modal__close-button:hover {
+.need-auth-modal__close-button:hover {
     color: #000;
 }
 
-.auth-modal__content {
+.need-auth-modal__content {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
 }
 
-.auth-modal__title {
+.need-auth-modal__title {
     font-size: 24px;
     font-weight: 700;
     margin: 0;
     color: #333;
 }
 
-.auth-modal__text {
+.need-auth-modal__text {
     font-size: 16px;
     color: #666;
     margin: 0;
