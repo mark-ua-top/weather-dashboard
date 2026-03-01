@@ -6,7 +6,6 @@
 .forecast-tabs {
     display: flex;
     flex-wrap: wrap;
-    /* Дозволяємо перенос кнопок */
     gap: 10px;
     justify-content: center;
 }
@@ -35,7 +34,6 @@
     font-size: 12px;
 }
 
-/* Tablet */
 @media screen and (min-width: 634px) {
     .forecast-tabs {
         justify-content: flex-start;

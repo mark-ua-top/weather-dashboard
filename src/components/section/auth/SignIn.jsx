@@ -25,7 +25,7 @@ export const SignIn = ({ onClose, switchAuth }) => {
             if (!res.ok) {
                 setMessage(data.message || 'Login failed');
             } else {
-                login(data); // Зберігаємо дані користувача в контексті
+                login(data);
                 onClose();
             }
         } catch {

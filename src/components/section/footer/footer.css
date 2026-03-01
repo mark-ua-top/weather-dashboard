@@ -9,7 +9,6 @@
 .footer-container {
     display: flex;
     flex-direction: column;
-    /* Вертикально для мобільних */
     align-items: center;
     gap: 20px;
     text-align: center;
@@ -18,7 +17,6 @@
 .footer-logo-wrapper {
     display: flex;
     flex-direction: column;
-    /* Лого і текст один під одним */
     align-items: center;
     gap: 10px;
 }
@@ -27,7 +25,6 @@
     width: 90px;
     height: 62px;
     margin-right: 0;
-    /* Прибираємо відступ на мобільному */
 }
 
 .footer-logo-text {
@@ -44,7 +41,6 @@
 
 .footer-address {
     margin-right: 0;
-    /* Прибираємо відступ на мобільному */
     font-family: 'Montserrat Alternates', sans-serif;
     font-weight: 500;
     font-size: 12px;
@@ -77,11 +73,9 @@
     background-image: url('../../../img/whatsapp.png');
 }
 
-/* ПЛАНШЕТ ТА ДЕСКТОП */
 @media screen and (min-width: 634px) {
     .footer-container {
         flex-direction: row;
-        /* Горизонтально */
         justify-content: space-between;
         align-items: flex-start;
         text-align: left;
@@ -89,7 +83,6 @@
 
     .footer-logo-wrapper {
         flex-direction: row;
-        /* Лого і текст в рядок */
     }
 
     .footer-logo {
@@ -98,6 +91,5 @@
 
     .footer-address {
         margin-right: 30px;
-        /* Трохи менший відступ для адаптиву */
     }
 }

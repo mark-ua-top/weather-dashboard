@@ -74,7 +74,6 @@
     pointer-events: none;
 }
 
-/* Приховування для екранів менше 1200px */
 @media screen and (max-width: 1199px) {
     .nature {
         display: none;

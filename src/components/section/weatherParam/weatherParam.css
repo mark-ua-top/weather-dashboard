@@ -5,7 +5,6 @@
 
 .weather-container {
     padding: 20px;
-    /* Менший падінг */
     background-color: #E8E8E8;
     border-radius: 20px;
     margin-bottom: 40px;
@@ -14,7 +13,6 @@
 .param-grid {
     display: grid;
     grid-template-columns: 1fr;
-    /* Мобільний: 1 колонка */
     gap: 20px;
 }
 
@@ -29,18 +27,15 @@
     text-align: center;
     min-height: 120px;
     width: 100%;
-    /* Адаптивна ширина */
     box-sizing: border-box;
 }
 
 .param-icon {
     width: 50px;
-    /* Менша іконка */
     height: 50px;
     margin-top: 10px;
 }
 
-/* Tablet */
 @media screen and (min-width: 634px) {
     .weather-container {
         padding: 30px;
@@ -53,7 +48,6 @@
     }
 }
 
-/* Desktop */
 @media screen and (min-width: 1200px) {
     .weather-container {
         padding: 40px 77px;
