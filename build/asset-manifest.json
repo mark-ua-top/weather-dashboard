@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.cbccab85.css",
+    "main.css": "/static/css/main.3dfa8133.css",
     "main.js": "/static/js/main.dd81ffaf.js",
     "static/media/hero-background.png": "/static/media/hero-background.b4015738e85a0455586b.png",
     "static/media/sun.png": "/static/media/sun.682f754adf4701ee4ae4.png",
     "static/media/pressure.png": "/static/media/pressure.95981d8313ba8493be1c.png",
     "index.html": "/index.html",
-    "main.cbccab85.css.map": "/static/css/main.cbccab85.css.map",
+    "main.3dfa8133.css.map": "/static/css/main.3dfa8133.css.map",
     "main.dd81ffaf.js.map": "/static/js/main.dd81ffaf.js.map"
   },
   "entrypoints": [
-    "static/css/main.cbccab85.css",
+    "static/css/main.3dfa8133.css",
     "static/js/main.dd81ffaf.js"
   ]
 }
