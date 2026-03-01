@@ -14,30 +14,63 @@
     display: flex;
     flex-direction: row;
     gap: 42px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .Header-page-button {
-    font-family: Montserrat Alternates;
+    font-family: 'Montserrat Alternates', sans-serif;
     font-weight: 500;
-    font-style: Medium;
     font-size: 12px;
     white-space: nowrap;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
 }
 
 .Header-sign-up-button {
     margin-left: auto;
-    font-family: Montserrat Alternates;
+    font-family: 'Montserrat Alternates', sans-serif;
     font-weight: 500;
-    font-style: Medium;
     font-size: 12px;
     white-space: nowrap;
     width: 89px;
     height: 35px;
-    padding: 10px 20px 10px 20px;
+    padding: 0;
     border-radius: 10px;
     background-color: #FFB36C;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Header-user-wrapper {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 15px;
+}
+
+.Header-user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.Header-user-name {
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    color: #333;
 }
 
 .Header-user-image {
-    margin-left: 29px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
 }

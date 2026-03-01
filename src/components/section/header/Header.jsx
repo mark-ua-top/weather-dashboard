@@ -4,8 +4,6 @@ import logo from '../../../img/Logo-header.png';
 import defaultUser from '../../../img/user-zaglushka.png';
 
 export const Header = ({ onAuthClick, user, logout }) => {
-    const avatar = user?.avatar || defaultUser;
-
     return (
         <section className="header">
             <div className="container header-container">
@@ -17,30 +15,27 @@ export const Header = ({ onAuthClick, user, logout }) => {
                     <li><button className="Header-page-button">Menu</button></li>
                 </ul>
 
-                {user
-                    ? (
-                        <>
-                            <button
-                                className="Header-sign-up-button"
-                                onClick={() => {
-                                    logout();
-                                    localStorage.removeItem('authToken');
-                                }}
-                            >
-                                Logout
-                            </button>
-                            <img className="Header-user-image" src={avatar} alt="user-avatar" />
-                        </>
-                    )
-                    : (
+                {user ? (
+                    <div className="Header-user-wrapper">
+                        <div className="Header-user-info">
+                            <span className="Header-user-name">{user.username}</span>
+                            <img className="Header-user-image" src={defaultUser} alt="avatar" />
+                        </div>
                         <button
                             className="Header-sign-up-button"
-                            onClick={onAuthClick} // викликає App.js для відкриття SignUp/SignIn модалки
+                            onClick={logout}
                         >
-                            Sign Up
+                            Logout
                         </button>
-                    )
-                }
+                    </div>
+                ) : (
+                    <button
+                        className="Header-sign-up-button"
+                        onClick={onAuthClick}
+                    >
+                        Sign Up
+                    </button>
+                )}
             </div>
         </section>
     );

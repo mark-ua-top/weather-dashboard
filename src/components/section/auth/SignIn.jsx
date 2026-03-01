@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from './AuthContext';
+import './auth.css';
 
 export const SignIn = ({ onClose, switchAuth }) => {
     const [usernameOrEmail, setUsernameOrEmail] = useState('');
@@ -24,7 +25,7 @@ export const SignIn = ({ onClose, switchAuth }) => {
             if (!res.ok) {
                 setMessage(data.message || 'Login failed');
             } else {
-                login(data);
+                login(data); // Зберігаємо дані користувача в контексті
                 onClose();
             }
         } catch {
@@ -33,46 +34,56 @@ export const SignIn = ({ onClose, switchAuth }) => {
     };
 
     return (
-        <div className="auth-form">
-            <h2>Sign In</h2>
+        <div className="auth-modal" onClick={onClose}>
+            <div className="auth-modal__container" onClick={e => e.stopPropagation()}>
+                <button className="auth-modal__close-button" onClick={onClose}>×</button>
 
-            <form onSubmit={handleSignIn}>
-                <input
-                    type="text"
-                    value={usernameOrEmail}
-                    onChange={e => setUsernameOrEmail(e.target.value)}
-                    placeholder="Username or Email"
-                    required
-                />
+                <div className="auth-form-container">
+                    <h2>Sign In</h2>
 
-                <div className="password-wrapper">
-                    <input
-                        type={showPassword ? 'text' : 'password'}
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        placeholder="Password"
-                        required
-                    />
-                    <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="show-btn"
-                    >
-                        {showPassword ? 'Hide' : 'Show'}
-                    </button>
+                    <form onSubmit={handleSignIn} className="auth-form">
+                        <label className="auth-form__label">Username or Email</label>
+                        <input
+                            className="auth-form__input"
+                            type="text"
+                            value={usernameOrEmail}
+                            onChange={e => setUsernameOrEmail(e.target.value)}
+                            placeholder="Username or Email"
+                            required
+                        />
+
+                        <label className="auth-form__label">Password</label>
+                        <div className="auth-form__password-field">
+                            <input
+                                className="auth-form__input"
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                placeholder="Password"
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="auth-form__toggle-password"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? 'Hide' : 'Show'}
+                            </button>
+                        </div>
+
+                        <button type="submit" className="auth-form__submit-button">Log In</button>
+                    </form>
+
+                    <div className="auth-form__footer">
+                        <span>Don't have an account? </span>
+                        <button type="button" className="auth-form__switch-button" onClick={switchAuth}>
+                            Sign Up
+                        </button>
+                    </div>
+
+                    {message && <div className="auth-form__message">{message}</div>}
                 </div>
-
-                <button type="submit">Sign In</button>
-            </form>
-
-            <p>
-                Don't have an account?{' '}
-                <span sr onClick={switchAuth} className="switch-link">
-                    Sign Up
-                </span>
-            </p>
-
-            {message && <div className="message">{message}</div>}
+            </div>
         </div>
     );
 };

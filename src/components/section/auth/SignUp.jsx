@@ -1,11 +1,12 @@
 import { useState } from "react";
 import "./auth.css";
 
-export const SignUp = ({ onClose, switchToSignIn }) => {
+export const SignUp = ({ onClose, switchAuth }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -19,61 +20,70 @@ export const SignUp = ({ onClose, switchToSignIn }) => {
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || "Error");
 
-            alert("User created");
-            onClose();
+            alert("User created! Please Sign In.");
+            switchAuth();
         } catch (err) {
-            alert(err.message);
+            setMessage(err.message);
         }
     };
 
     return (
-        <div className="modal">
-            <div className="modal-content">
-                <button className="close-btn" onClick={onClose}>×</button>
+        <div className="auth-modal" onClick={onClose}>
+            <div className="auth-modal__container" onClick={e => e.stopPropagation()}>
+                <button className="auth-modal__close-button" onClick={onClose}>×</button>
 
-                <h2>Sign Up</h2>
+                <div className="auth-form-container">
+                    <h2>Sign Up</h2>
 
-                <form onSubmit={onSubmit}>
-                    <input
-                        value={username}
-                        onChange={e => setUsername(e.target.value)}
-                        placeholder="Username"
-                        required
-                    />
-
-                    <input
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                        placeholder="Email"
-                        type="email"
-                        required
-                    />
-
-                    <div className="password-wrapper">
+                    <form onSubmit={onSubmit} className="auth-form">
+                        <label className="auth-form__label">Username</label>
                         <input
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            placeholder="Password"
-                            type={showPassword ? "text" : "password"}
+                            className="auth-form__input"
+                            value={username}
+                            onChange={e => setUsername(e.target.value)}
+                            placeholder="Username"
                             required
                         />
-                        <button
-                            type="button"
-                            className="show-btn"
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
-                            {showPassword ? "Hide" : "Show"}
+
+                        <label className="auth-form__label">E-Mail</label>
+                        <input
+                            className="auth-form__input"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            placeholder="Email"
+                            type="email"
+                            required
+                        />
+
+                        <label className="auth-form__label">Password</label>
+                        <div className="auth-form__password-field">
+                            <input
+                                className="auth-form__input"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                placeholder="Password"
+                                type={showPassword ? "text" : "password"}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="auth-form__toggle-password"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? "Hide" : "Show"}
+                            </button>
+                        </div>
+
+                        <button type="submit" className="auth-form__submit-button">Sign up</button>
+                    </form>
+
+                    <div className="auth-form__footer">
+                        <span>Already have an account? </span>
+                        <button type="button" className="auth-form__switch-button" onClick={switchAuth}>
+                            Log In
                         </button>
                     </div>
-
-                    <button type="submit">Sign Up</button>
-                </form>
-
-                <div className="auth-switch">
-                    <span>Already have an account?</span>
-                    <button type="button" onClick={switchToSignIn}>
-                        Sign In
-                    </button>
+                    {message && <div className="auth-form__message">{message}</div>}
                 </div>
             </div>
         </div>
