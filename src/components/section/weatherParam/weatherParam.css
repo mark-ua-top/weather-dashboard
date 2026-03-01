@@ -1,5 +1,6 @@
 .weather-param {
-    padding: 20px 0;
+    background-color: #E8E8E8;
+    border-radius: 20px;
     font-family: 'Montserrat Alternates', sans-serif;
 }
 
@@ -10,7 +11,7 @@
 }
 
 .param-card {
-    background-color: #f0f0f0;
+    background-color: #D9D9D9;
     border-radius: 20px;
     padding: 20px;
     display: flex;
@@ -20,6 +21,8 @@
     text-align: center;
     position: relative;
     min-height: 150px;
+    width: 290px;
+    height: 217px;
 }
 
 .param-label {
@@ -37,8 +40,8 @@
 }
 
 .param-icon {
-    width: 50px;
-    height: 50px;
+    width: 85px;
+    height: 85px;
     margin-top: auto;
 }
 
