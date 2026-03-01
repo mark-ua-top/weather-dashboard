@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './weatherParam.css';
 
-// Імпортуйте іконки
 import feelsLikeIcon from '../../../img/feels-like.png';
 import humidityIcon from '../../../img/humidity.png';
 import pressureIcon from '../../../img/pressure.png';
@@ -25,7 +24,7 @@ export const WeatherParam = ({ city }) => {
 
     return (
         <section className="weather-param">
-            <div className="container">
+            <div className="weather-container container">
                 <div className="param-grid">
 
                     <div className="param-card">

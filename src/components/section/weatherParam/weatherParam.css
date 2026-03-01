@@ -1,13 +1,21 @@
 .weather-param {
+    font-family: 'Montserrat Alternates', sans-serif;
+}
+
+.weather-container {
+    padding-left: 77px;
+    padding-right: 77px;
+    padding-top: 40px;
+    padding-bottom: 40px;
     background-color: #E8E8E8;
     border-radius: 20px;
-    font-family: 'Montserrat Alternates', sans-serif;
 }
 
 .param-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    column-gap: 58px;
+    row-gap: 40px;
 }
 
 .param-card {
