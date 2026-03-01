@@ -6,9 +6,9 @@ export const Footer = () => {
     return (
         <footer className="footer">
             <div className="container footer-container">
-                <div className="footer-logo-wrapper">
+                <a href="#header" className="footer-logo-wrapper">
                     <img src={logo} alt="247 Forecast Logo" className="footer-logo" />
-                </div>
+                </a>
 
                 <div className="footer-address">
                     <h3 className="footer-title">Address</h3>
@@ -20,9 +20,9 @@ export const Footer = () => {
                 <div className="footer-contact">
                     <h3 className="footer-title">Contact us</h3>
                     <div className="footer-socials">
-                        <a href="#" className="social-icon instagram"></a>
-                        <a href="#" className="social-icon facebook"></a>
-                        <a href="#" className="social-icon whatsapp"></a>
+                        <a href="https://www.instagram.com/" className="social-icon instagram" target="_blank" rel="noopener noreferrer"></a>
+                        <a href="https://www.facebook.com/" className="social-icon facebook" target="_blank" rel="noopener noreferrer"></a>
+                        <a href="https://www.whatsapp.com/" className="social-icon whatsapp" target="_blank" rel="noopener noreferrer"></a>
                     </div>
                 </div>
             </div>

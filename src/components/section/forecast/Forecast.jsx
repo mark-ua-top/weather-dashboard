@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import '../../../dstyle.css'
 import './forecast.css'
 import { Line } from 'react-chartjs-2';
+import { AuthContext } from '../auth/AuthContext';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -20,15 +21,24 @@ export const Forecast = ({ city }) => {
     const [forecast, setForecast] = useState([]);
     const [mode, setMode] = useState('hourly');
 
+    const { user } = useContext(AuthContext);
+
     useEffect(() => {
-        if (!city) return;
+        if (!city || !user) {
+            setForecast([]);
+            return;
+        }
+
         fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`)
             .then(res => res.json())
             .then(data => {
                 if (data.list) setForecast(data.list);
-            });
-    }, [city]);
+                else setForecast([]);
+            })
+            .catch(() => setForecast([]));
+    }, [city, user]);
 
+    if (!user) return null;
     if (!forecast.length) return <p>Loading...</p>;
 
     const hourly = forecast.slice(0, 12);
@@ -54,7 +64,7 @@ export const Forecast = ({ city }) => {
     return (
         <section className="forecast">
             <div className="forecast-container container">
-                <div style={{ marginBottom: '10px' }}>
+                <div style={{ marginBottom: '10px', display: 'flex', gap: '10px' }}>
                     <button
                         className={`more-btn ${mode === 'hourly' ? 'active' : ''}`}
                         onClick={() => setMode('hourly')}

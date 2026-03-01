@@ -125,14 +125,16 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
                                 <div className="weather-temp-display">{Math.round(weather.main?.temp) || 0}°C</div>
 
                                 <div className="weather-footer-actions">
-                                    <LikeButton
-                                        isActive={favorites.includes(cityNorm)}
-                                        onClick={() => requireAuth(() => onLike(cityNorm))}
-                                    />
+                                    {user && (
+                                        <LikeButton
+                                            isActive={favorites.includes(cityNorm)}
+                                            onClick={() => requireAuth(() => onLike(cityNorm))}
+                                        />
+                                    )}
                                     <button className="see-more-action" onClick={() => requireAuth(() => onMoreClick(cityNorm))}>
                                         See more
                                     </button>
-                                    <DeleteButton onClick={() => handleDelete(cityNorm)} />
+                                    <DeleteButton className="deleteButton" onClick={() => handleDelete(cityNorm)} />
                                 </div>
                             </li>
                         );

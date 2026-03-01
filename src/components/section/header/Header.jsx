@@ -10,9 +10,9 @@ export const Header = ({ onAuthClick, user, logout }) => {
                 <img className="Header-logo" src={logo} alt="Logo" />
 
                 <ul className="Header-list">
-                    <li><button className="Header-page-button">Who we are</button></li>
-                    <li><button className="Header-page-button">Contacts</button></li>
-                    <li><button className="Header-page-button">Menu</button></li>
+                    <li><a href="#pets" className="Header-page-button">Pets</a></li>
+                    <li><a href="#nature" className="Header-page-button">Nature</a></li>
+                    <li><a href="#contacts" className="Header-page-button">Contacts</a></li>
                 </ul>
 
                 {user ? (

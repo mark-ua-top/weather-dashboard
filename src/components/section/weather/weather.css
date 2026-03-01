@@ -37,8 +37,10 @@
     margin-bottom: 15px;
     margin-left: 10px;
     margin-right: 10px;
+}
 
-    @media screen and (max-width: 633px) {
+@media screen and (max-width: 633px) {
+    .weather-header {
         width: 200px;
     }
 }
@@ -101,9 +103,11 @@
 .weather-footer-actions {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin-top: auto;
+    position: relative;
+    gap: 10px;
 }
 
 .see-more-action {
@@ -118,6 +122,8 @@
     font-family: Montserrat;
     font-weight: 500;
     font-size: 10px;
+    margin-left: auto;
+    margin-right: 10px;
 }
 
 .weather-footer-actions button:not(.see-more-action) {

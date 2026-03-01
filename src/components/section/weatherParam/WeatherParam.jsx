@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './weatherParam.css';
+import { AuthContext } from '../auth/AuthContext';
 
 import feelsLikeIcon from '../../../img/feels-like.png';
 import humidityIcon from '../../../img/humidity.png';
@@ -11,22 +12,27 @@ export const WeatherParam = ({ city }) => {
     const apiKey = '62bf88a778653acc6a38cfb2f80523b2';
     const [data, setData] = useState(null);
 
+    const { user } = useContext(AuthContext);
+
     useEffect(() => {
-        if (!city) return;
-        setData(null);
+        if (!city || !user) {
+            setData(null);
+            return;
+        }
+
         fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
             .then(res => res.json())
             .then(result => setData(result.cod === 200 ? result : null))
             .catch(() => setData(null));
-    }, [city]);
+    }, [city, user]);
 
+    if (!user) return null;
     if (!data) return <p className="loading-text">Loading {city}...</p>;
 
     return (
         <section className="weather-param">
             <div className="weather-container container">
                 <div className="param-grid">
-
                     <div className="param-card">
                         <span className="param-label">Feels like</span>
                         <span className="param-value">{Math.round(data.main.feels_like)}°C</span>

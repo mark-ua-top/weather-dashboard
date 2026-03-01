@@ -70,7 +70,9 @@ function App() {
 
   return (
     <>
-      <Header onAuthClick={openSignUp} user={user} logout={logout} />
+      <div id="header">
+        <Header onAuthClick={openSignUp} user={user} logout={logout} />
+      </div>
       <Hero addCity={addCity} />
 
       <Weather
@@ -85,9 +87,15 @@ function App() {
       {selectedCity && <WeatherParam city={selectedCity} />}
       {forecastCity && <Forecast city={forecastCity} />}
 
-      <Pets />
-      <Nature />
-      <Footer />
+      <div id="pets">
+        <Pets />
+      </div>
+      <div id="nature">
+        <Nature />
+      </div>
+      <div id="contacts">
+        <Footer />
+      </div>
 
       {showAuthModal && (
         <div className="auth-modal" onClick={handleAuthClose}>
