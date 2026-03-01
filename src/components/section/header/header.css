@@ -36,6 +36,12 @@
     color: #333;
 }
 
+/* SIGN UP коли НЕ залогінений */
+.header-container>.Header-sign-up-button {
+    margin-left: auto;
+}
+
+/* USER BLOCK коли залогінений */
 .Header-user-wrapper {
     margin-left: auto;
     display: flex;
@@ -114,11 +120,8 @@
         gap: 10px;
     }
 
-    .Header-user-info {
-        justify-content: center;
-    }
-
     .Header-sign-up-button {
         width: 100%;
+        margin-left: 0;
     }
 }
