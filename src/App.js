@@ -17,7 +17,7 @@ import { AuthContext } from './components/section/auth/AuthContext.jsx';
 import { Analytics } from '@vercel/analytics/react';
 
 function App() {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [cities, setCities] = useState(() => JSON.parse(localStorage.getItem('cities')) || []);
   const [favorites, setFavorites] = useState(() => JSON.parse(localStorage.getItem('favorites')) || []);
   const [selectedCity, setSelectedCity] = useState(null);
@@ -70,7 +70,7 @@ function App() {
 
   return (
     <>
-      <Header onAuthClick={openSignUp} />
+      <Header onAuthClick={openSignUp} user={user} logout={logout} />
       <Hero addCity={addCity} />
 
       <Weather
@@ -90,8 +90,8 @@ function App() {
       <Footer />
 
       {showAuthModal && (
-        <div className="modal-overlay" onClick={handleAuthClose}>
-          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+        <div className="auth-modal" onClick={handleAuthClose}>
+          <div className="auth-modal__container" onClick={(e) => e.stopPropagation()}>
             {authType === 'signin' ? (
               <SignIn
                 onClose={handleAuthClose}
