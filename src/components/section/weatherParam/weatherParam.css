@@ -1,61 +1,70 @@
 .weather-param {
     font-family: 'Montserrat Alternates', sans-serif;
+    padding: 0 15px;
 }
 
 .weather-container {
-    padding-left: 77px;
-    padding-right: 77px;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    padding: 20px;
+    /* Менший падінг */
     background-color: #E8E8E8;
     border-radius: 20px;
-    margin-bottom: 80px;
+    margin-bottom: 40px;
 }
 
 .param-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    column-gap: 58px;
-    row-gap: 40px;
+    grid-template-columns: 1fr;
+    /* Мобільний: 1 колонка */
+    gap: 20px;
 }
 
 .param-card {
     background-color: #D9D9D9;
     border-radius: 20px;
-    padding: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    position: relative;
-    min-height: 150px;
-    width: 290px;
-    height: 217px;
-}
-
-.param-label {
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 5px;
-    font-weight: 500;
-}
-
-.param-value {
-    font-size: 24px;
-    font-weight: 700;
-    color: #000;
-    margin-bottom: 10px;
+    min-height: 120px;
+    width: 100%;
+    /* Адаптивна ширина */
+    box-sizing: border-box;
 }
 
 .param-icon {
-    width: 85px;
-    height: 85px;
-    margin-top: auto;
+    width: 50px;
+    /* Менша іконка */
+    height: 50px;
+    margin-top: 10px;
 }
 
-.loading-text {
-    text-align: center;
-    font-family: 'Montserrat Alternates', sans-serif;
-    margin: 20px 0;
+/* Tablet */
+@media screen and (min-width: 634px) {
+    .weather-container {
+        padding: 30px;
+    }
+
+    .param-grid {
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 30px;
+        row-gap: 30px;
+    }
+}
+
+/* Desktop */
+@media screen and (min-width: 1200px) {
+    .weather-container {
+        padding: 40px 77px;
+    }
+
+    .param-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .param-card {
+        width: 290px;
+        height: 217px;
+    }
 }

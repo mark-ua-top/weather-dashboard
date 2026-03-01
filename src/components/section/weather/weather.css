@@ -1,21 +1,26 @@
 .weather-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 40px;
-    padding: 20px;
+    grid-template-columns: 1fr;
+    /* Мобільний: 1 колонка */
+    gap: 20px;
+    padding: 10px;
     list-style: none;
     justify-items: center;
-    margin-bottom: 80px;
+    margin-bottom: 40px;
 }
 
 .weather-item,
 .weather-item-invalid {
     background: #EAEAEA;
     border-radius: 20px;
-    padding: 15px 20px 20px 20px;
+    padding: 15px;
     text-align: center;
-    width: 320px;
-    height: 430px;
+    width: 100%;
+    /* На всю ширину контейнера */
+    max-width: 320px;
+    /* Макс ширина */
+    height: 400px;
+    /* Трохи зменшив висоту для мобільних */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,81 +34,60 @@
 .weather-header {
     font-family: Montserrat;
     font-weight: 500;
-    font-style: Medium;
     font-size: 14px;
     display: flex;
     justify-content: space-between;
-    width: 260px;
+    width: 100%;
     color: #000;
-    margin-bottom: 15px;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 .weather-time {
     font-family: Montserrat;
     font-weight: 500;
-    font-style: Medium;
-    font-size: 24px;
-    margin-bottom: 10px;
+    font-size: 20px;
+    /* Менший шрифт */
+    margin-bottom: 5px;
     color: #000;
 }
 
 .weather-forecast-btn {
     background: #FFB36C;
     border: none;
-    width: 114px;
-    height: 28px;
+    width: 100px;
+    height: 25px;
     border-radius: 10px;
-    padding-top: 8px;
-    padding-right: 18px;
-    padding-bottom: 8px;
-    padding-left: 18px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 10px;
     color: #000;
-    margin-bottom: 15px;
-    transition: background 0.3s;
+    margin-bottom: 10px;
     font-family: Montserrat;
     font-weight: 500;
-    font-style: Medium;
-    font-size: 10px;
 }
 
 .weather-date {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 18px;
+    font-size: 12px;
     color: #000;
-    margin-bottom: 22px;
+    margin-bottom: 15px;
     font-family: Montserrat;
     font-weight: 500;
-    font-style: Medium;
-    font-size: 14px;
-}
-
-.separator {
-    color: #000;
-    font-weight: 300;
 }
 
 .weather-icon-main {
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    /* Менша іконка */
+    height: 80px;
     object-fit: contain;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .weather-temp-display {
-    font-size: 64px;
-    font-weight: 400;
-    margin-bottom: 30px;
+    font-size: 30px;
+    /* Менший шрифт */
+    font-weight: 500;
+    margin-bottom: auto;
     color: #000;
     font-family: Montserrat;
-    font-weight: 500;
-    font-style: Medium;
-    font-size: 32px;
 }
 
 .weather-footer-actions {
@@ -111,72 +95,33 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: auto;
+    margin-top: 10px;
 }
 
 .see-more-action {
     background: #FFB36C;
     border: none;
-    padding: 8px 25px;
     cursor: pointer;
     color: #000;
-    width: 99px;
-    height: 28px;
+    width: 80px;
+    height: 25px;
     border-radius: 10px;
-    padding-top: 8px;
-    padding-right: 25px;
-    padding-bottom: 8px;
-    padding-left: 25px;
     font-family: Montserrat;
     font-weight: 500;
-    font-style: Medium;
     font-size: 10px;
 }
 
-.weather-footer-actions button:not(.see-more-action) {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-
-.weather-footer-actions img,
-.weather-footer-actions svg {
-    width: 28px;
-    height: 28px;
-}
-
-.weather-item-invalid {
-    background: #f8d7da;
-}
-
-.pieces-container {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 2px;
-    pointer-events: none;
-    z-index: 10;
-}
-
-.piece {
-    background: #d1d1d1;
-    border-radius: 4px;
-    animation: fadeOut 0.8s forwards;
-}
-
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-        transform: scale(1);
+/* Tablet & Desktop */
+@media screen and (min-width: 634px) {
+    .weather-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+        padding: 20px;
     }
+}
 
-    100% {
-        opacity: 0;
-        transform: scale(0.5);
+@media screen and (min-width: 1200px) {
+    .weather-list {
+        grid-template-columns: repeat(3, 1fr);
     }
 }

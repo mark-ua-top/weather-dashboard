@@ -1,6 +1,6 @@
 .footer {
     background-color: #FFB36C;
-    padding: 30px 0 64px 0;
+    padding: 30px 0;
     color: #000;
     font-family: 'Montserrat Alternates', sans-serif;
     margin-top: auto;
@@ -8,13 +8,17 @@
 
 .footer-container {
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
+    flex-direction: column;
+    /* Вертикально для мобільних */
+    align-items: center;
     gap: 20px;
+    text-align: center;
 }
 
 .footer-logo-wrapper {
     display: flex;
+    flex-direction: column;
+    /* Лого і текст один під одним */
     align-items: center;
     gap: 10px;
 }
@@ -22,7 +26,8 @@
 .footer-logo {
     width: 90px;
     height: 62px;
-    margin-right: 103px;
+    margin-right: 0;
+    /* Прибираємо відступ на мобільному */
 }
 
 .footer-logo-text {
@@ -32,23 +37,23 @@
 
 .footer-title {
     margin-bottom: 10px;
-    font-family: Montserrat Alternates;
+    font-family: 'Montserrat Alternates', sans-serif;
     font-weight: 500;
-    font-style: Medium;
     font-size: 16px;
 }
 
 .footer-address {
-    margin-right: 103px;
-    font-family: Montserrat Alternates;
+    margin-right: 0;
+    /* Прибираємо відступ на мобільному */
+    font-family: 'Montserrat Alternates', sans-serif;
     font-weight: 500;
-    font-style: Medium;
     font-size: 12px;
 }
 
 .footer-socials {
     display: flex;
     gap: 20px;
+    justify-content: center;
 }
 
 .social-icon {
@@ -70,4 +75,29 @@
 
 .social-icon.whatsapp {
     background-image: url('../../../img/whatsapp.png');
+}
+
+/* ПЛАНШЕТ ТА ДЕСКТОП */
+@media screen and (min-width: 634px) {
+    .footer-container {
+        flex-direction: row;
+        /* Горизонтально */
+        justify-content: space-between;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .footer-logo-wrapper {
+        flex-direction: row;
+        /* Лого і текст в рядок */
+    }
+
+    .footer-logo {
+        margin-right: 10px;
+    }
+
+    .footer-address {
+        margin-right: 30px;
+        /* Трохи менший відступ для адаптиву */
+    }
 }

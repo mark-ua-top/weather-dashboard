@@ -1,5 +1,6 @@
 .nature {
     position: relative;
+    margin-bottom: 80px;
 }
 
 .nature-title {
@@ -8,7 +9,6 @@
     top: 0;
     font-family: Montserrat;
     font-weight: 500;
-    font-style: Medium;
     font-size: 20px;
 }
 
@@ -72,4 +72,11 @@
     opacity: 0;
     z-index: 1;
     pointer-events: none;
+}
+
+/* Приховування для екранів менше 1200px */
+@media screen and (max-width: 1199px) {
+    .nature {
+        display: none;
+    }
 }
