@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import './weather.css';
 import LikeButton from '../../add/LikeButton';
 import DeleteButton from '../../add/DeleteButton';
-import RefreshButton from '../../add/RefreshButton';
 import sun from '../../../img/sun.png';
 import { NeedAuthModal } from '../modals/NeedAuthModal';
 import { AuthContext } from '../auth/AuthContext';
@@ -19,7 +18,7 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
 
     const normalize = (str) => str.trim().toLowerCase();
 
-    useEffect(() => {
+    const fetchWeatherData = useCallback(() => {
         if (!cities.length) {
             setWeatherData([]);
             setInvalidCities([]);
@@ -31,14 +30,43 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
             cities.map(city =>
                 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`)
                     .then(res => res.json())
-                    .then(data => data.cod === 200 ? { ...data, norm: normalize(city) } : (setInvalidCities(prev => [...prev, city]), null))
-                    .catch(() => {
-                        setInvalidCities(prev => [...prev, city]);
-                        return null;
-                    })
+                    .then(data => data.cod === 200 ? { ...data, norm: normalize(city) } : null)
+                    .catch(() => null)
             )
-        ).then(data => setWeatherData(data.filter(Boolean)));
-    }, [cities, apiKey]);
+        ).then(results => {
+            const valid = [];
+            const invalid = [];
+
+            cities.forEach((city, index) => {
+                const data = results[index];
+                if (data) {
+                    valid.push(data);
+                } else {
+                    invalid.push(city);
+                }
+            });
+
+            valid.sort((a, b) => {
+                const aIsFav = favorites.includes(a.norm);
+                const bIsFav = favorites.includes(b.norm);
+                if (aIsFav && !bIsFav) return -1;
+                if (!aIsFav && bIsFav) return 1;
+                return 0;
+            });
+
+            setWeatherData(valid);
+            setInvalidCities(invalid);
+        });
+    }, [cities, favorites, apiKey]);
+
+    useEffect(() => {
+        fetchWeatherData();
+    }, [fetchWeatherData]);
+
+    useEffect(() => {
+        const intervalId = setInterval(fetchWeatherData, 30000);
+        return () => clearInterval(intervalId);
+    }, [fetchWeatherData]);
 
     const handleDelete = (city) => {
         setRemoving(prev => ({ ...prev, [city]: true }));
@@ -69,7 +97,7 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
                         const dayStr = now.toLocaleDateString('en-US', { weekday: 'long' });
 
                         return (
-                            <li key={weather.id} className={`weather-item ${removing[cityNorm] ? 'removing' : ''}`}>
+                            <li key={weather.id} className={`weather-item ${removing[cityNorm] ? 'removing' : ''} ${favorites.includes(cityNorm) ? 'favorite' : ''}`}>
                                 {removing[cityNorm] && <div className="pieces-container">{Array.from({ length: 12 }).map((_, i) => <div key={i} className="piece" />)}</div>}
 
                                 <div className="weather-header">
@@ -97,7 +125,6 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
                                 <div className="weather-temp-display">{Math.round(weather.main?.temp) || 0}°C</div>
 
                                 <div className="weather-footer-actions">
-                                    <RefreshButton onClick={() => { }} />
                                     <LikeButton
                                         isActive={favorites.includes(cityNorm)}
                                         onClick={() => requireAuth(() => onLike(cityNorm))}
