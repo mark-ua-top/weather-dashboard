@@ -53,7 +53,7 @@ export const Forecast = ({ city }) => {
 
     return (
         <section className="forecast">
-            <div className="container">
+            <div className="forecast-container container">
                 <div style={{ marginBottom: '10px' }}>
                     <button
                         className={`more-btn ${mode === 'hourly' ? 'active' : ''}`}

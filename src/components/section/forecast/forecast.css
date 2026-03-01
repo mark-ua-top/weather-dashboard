@@ -1,6 +1,9 @@
 .forecast-tabs {
     display: flex;
     gap: 10px;
+}
+
+.forecast-container {
     margin-bottom: 80px;
 }
 
