@@ -1,27 +1,52 @@
 import React, { useState } from 'react';
-import { cities } from 'world-cities-json';
+import { cities as worldCities } from 'world-cities-json';
 import './hero.css';
 
-const popularCities = cities.map(c => c.city_ascii);
+const popularCities = worldCities.map(c => c.city_ascii);
 
-export const Hero = ({ addCity, cities }) => {
+export const Hero = ({ addCity, cities = [] }) => {
     const [input, setInput] = useState('');
     const [suggestions, setSuggestions] = useState([]);
+    const [error, setError] = useState('');
+
+    const normalize = (str) => str.trim().toLowerCase();
 
     const handleChange = (e) => {
         const val = e.target.value;
         setInput(val);
-        if (!val) return setSuggestions([]);
+        setError('');
+
+        if (!val.trim()) {
+            setSuggestions([]);
+            return;
+        }
+
         const regex = new RegExp(val, 'i');
         setSuggestions(popularCities.filter(c => regex.test(c)).slice(0, 5));
     };
 
     const handleSubmit = (city = input) => {
         const trimmed = city.trim();
-        if (!trimmed) return;
+
+        if (!trimmed) {
+            setError('Please enter a city name');
+            return;
+        }
+
+        const normalizedInput = normalize(trimmed);
+
+        // Перевірка на дублікати
+        const exists = cities.some(c => normalize(c) === normalizedInput);
+
+        if (exists) {
+            setError('City already exists');
+            return;
+        }
+
         addCity(trimmed);
         setInput('');
         setSuggestions([]);
+        setError('');
     };
 
     const handleKeyDown = (e) => {
@@ -44,14 +69,21 @@ export const Hero = ({ addCity, cities }) => {
 
                 <ul className='hero-input-list'>
                     <li>
-                        <input
-                            className="hero-input"
-                            type="text"
-                            placeholder="Search location..."
-                            value={input}
-                            onChange={handleChange}
-                            onKeyDown={handleKeyDown}
-                        />
+                        {/* Wrapper має бути тут, щоб error-message позиціонувався відносно нього */}
+                        <div className="input-wrapper">
+                            <input
+                                // Динамічно додаємо клас input-error, якщо є помилка
+                                className={`hero-input ${error ? 'input-error' : ''}`}
+                                type="text"
+                                placeholder="Search location..."
+                                value={input}
+                                onChange={handleChange}
+                                onKeyDown={handleKeyDown}
+                            />
+                            {/* Повідомлення про помилку */}
+                            {error && <p className="error-message">{error}</p>}
+                        </div>
+
                         {suggestions.length > 0 &&
                             <ul className="suggestions">
                                 {suggestions.map(s => (

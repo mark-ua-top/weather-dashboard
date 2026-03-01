@@ -81,6 +81,12 @@
     display: flex;
 }
 
+.input-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
 .hero-input {
     width: 580px;
     height: 42px;
@@ -94,6 +100,20 @@
     outline: none;
     position: relative;
     z-index: 1;
+}
+
+.hero-input.input-error {
+    border: 1px solid red;
+}
+
+.error-message {
+    color: red;
+    font-family: Montserrat, sans-serif;
+    font-size: 12px;
+    position: absolute;
+    bottom: -18px;
+    left: 10px;
+    margin: 0;
 }
 
 .hero-input-button {
@@ -187,6 +207,10 @@
 
     .hero-input {
         width: 100%;
+        border-radius: 10px;
+    }
+
+    .hero-input.input-error {
         border-radius: 10px;
     }
 

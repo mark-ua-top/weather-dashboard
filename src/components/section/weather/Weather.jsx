@@ -30,19 +30,27 @@ export const Weather = ({ cities, favorites, onDelete, onLike, onMoreClick, onFo
             cities.map(city =>
                 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`)
                     .then(res => res.json())
-                    .then(data => data.cod === 200 ? { ...data, norm: normalize(city) } : null)
+                    .then(data => data.cod === 200 ? { ...data, norm: normalize(city), originalCity: city } : null)
                     .catch(() => null)
             )
         ).then(results => {
             const valid = [];
             const invalid = [];
+            const seenNormalizedNames = new Set();
+            const seenDataIds = new Set();
 
             cities.forEach((city, index) => {
                 const data = results[index];
                 if (data) {
-                    valid.push(data);
+                    if (!seenDataIds.has(data.id) && !seenNormalizedNames.has(data.norm)) {
+                        valid.push(data);
+                        seenDataIds.add(data.id);
+                        seenNormalizedNames.add(data.norm);
+                    }
                 } else {
-                    invalid.push(city);
+                    if (!invalid.includes(city)) {
+                        invalid.push(city);
+                    }
                 }
             });
 
