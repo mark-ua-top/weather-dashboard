@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react"; // 1. Додано useContext
+import { AuthContext } from "./AuthContext"; // 2. Імпорт контексту
 import "./auth.css";
 
 export const SignUp = ({ onClose, switchAuth }) => {
@@ -8,8 +9,13 @@ export const SignUp = ({ onClose, switchAuth }) => {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
 
+    // 3. Отримуємо функцію login з контексту
+    const { login } = useContext(AuthContext);
+
     const onSubmit = async (e) => {
         e.preventDefault();
+        setMessage(""); // Очищаємо попередні повідомлення
+
         try {
             const res = await fetch("https://weather-dashboard-production-1731.up.railway.app/api/signup", {
                 method: "POST",
@@ -20,8 +26,9 @@ export const SignUp = ({ onClose, switchAuth }) => {
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || "Error");
 
-            alert("User created! Please Sign In.");
-            switchAuth();
+            // 4. Логінимо користувача відразу після реєстрації
+            login(data);
+            onClose(); // Закриваємо модальне вікно
         } catch (err) {
             setMessage(err.message);
         }
